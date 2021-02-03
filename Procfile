@@ -1,0 +1,1 @@
+web: gunicorn algorithms_simulation.wsgi
