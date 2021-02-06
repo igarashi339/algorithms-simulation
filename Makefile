@@ -1,15 +1,24 @@
+# すべてのサービスを起動
 .PHONY: up
 up:
 	docker-compose up -d
 
-.PHONY: shell
-shell:
-	docker-compose exec develop bash
-
+# すべてのサービスを停止
 .PHONY: down
 down:
 	docker-compose down
 
+# developコンテナに入る
+.PHONY: shell
+shell:
+	docker-compose exec develop bash
+
+# developコンテナの上でWebサーバを起動する
 .PHONY: server
 server:
-	python manage.py runserver 0:8000
+	docker-compose exec develop bash scripts/run_local_server.sh
+
+# すべてのコンテナとイメージを削除する
+.PHONY: delete-all
+delete-all:
+	bash scripts/delete_all_containers_and_images.sh
