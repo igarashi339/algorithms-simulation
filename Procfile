@@ -1,1 +1,1 @@
-web: gunicorn algorithms_simulation.wsgi
+web: cd web && gunicorn config.wsgi
