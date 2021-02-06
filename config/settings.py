@@ -25,7 +25,7 @@ SECRET_KEY = '=fb8-x(3issal8a)==g86rqc4y@04@2y%q&u+_!ze=oaw68o8j'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["algorithms-simulation.herokuapp.com"]
+ALLOWED_HOSTS = ["algorithms-simulation.herokuapp.com", "localhost"]
 
 
 # Application definition
