@@ -10,3 +10,5 @@
 `make down` # すべてのサービスの停止
 
 `make delete-all` # すべてのコンテナとイメージを削除
+
+`make test` # テストを実行
