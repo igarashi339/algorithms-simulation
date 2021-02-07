@@ -22,3 +22,8 @@ server:
 .PHONY: delete-all
 delete-all:
 	bash scripts/delete_all_containers_and_images.sh
+
+# テストを実行する
+.PHONY: test
+test:
+	docker-compose exec develop bash scripts/run_algorithm_tests.sh

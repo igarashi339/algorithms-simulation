@@ -8,3 +8,7 @@
 `make server` # 開発用コンテナの上でWebサーバを起動
 
 `make down` # すべてのサービスの停止
+
+`make delete-all` # すべてのコンテナとイメージを削除
+
+`make test` # テストを実行
