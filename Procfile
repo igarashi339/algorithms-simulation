@@ -1,1 +1,1 @@
-web: gunicorn algorithms_simulation.wsgi
+web: gunicorn config.wsgi
