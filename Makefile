@@ -26,4 +26,4 @@ delete-all:
 # テストを実行する
 .PHONY: test
 test:
-	docker-compose exec develop bash scripts/run_algorithm_tests.sh
+	docker-compose exec -T develop bash scripts/run_algorithm_tests.sh
