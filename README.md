@@ -1,4 +1,7 @@
 # algorithms-simulation
+グラフ系アルゴリズムをシミュレートするWebサイトです。
+
+https://algorithms-simulation.herokuapp.com/
 
 ### 実行方法
 `make up ` # すべてのサービスの起動
