@@ -27,3 +27,13 @@ delete-all:
 .PHONY: test
 test:
 	docker-compose exec backend bash scripts/run_algorithm_tests.sh
+
+# キャッシュを削除してビルドする
+.PHONY: build
+build:
+	docker-compose build --no-cache
+
+# ホストとコンテナのユーザを一致させてfrontendコンテナに入る
+.PHONY: dev-shell
+dev-shell:
+	docker exec -u $(shell id -u) -it algorithms-simulation_frontend_1 sh
