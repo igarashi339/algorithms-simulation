@@ -8,15 +8,15 @@ up:
 down:
 	docker-compose down
 
-# developコンテナに入る
+# backendコンテナに入る
 .PHONY: shell
 shell:
-	docker-compose exec develop bash
+	docker-compose exec backend bash
 
-# developコンテナの上でWebサーバを起動する
+# backendコンテナの上でWebサーバを起動する
 .PHONY: server
 server:
-	docker-compose exec develop bash scripts/run_local_server.sh
+	docker-compose exec backend bash scripts/run_local_server.sh
 
 # すべてのコンテナとイメージを削除する
 .PHONY: delete-all
@@ -26,4 +26,4 @@ delete-all:
 # テストを実行する
 .PHONY: test
 test:
-	docker-compose exec develop bash scripts/run_algorithm_tests.sh
+	docker-compose exec backend bash scripts/run_algorithm_tests.sh

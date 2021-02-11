@@ -1,9 +1,11 @@
 version: '3'
 services:
-  develop:
-    build: .
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     volumes:
-      - .:/code
+      - ./backend:/code
     ports:
       - '8000:8000'
     command: tail -f /dev/null
