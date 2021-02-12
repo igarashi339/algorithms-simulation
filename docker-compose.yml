@@ -13,15 +13,10 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    environment:
-      - USER_NAME
-      - USER_ID
-      - GROUP_NAME
-      - GROUP_ID
     volumes:
       - ./frontend:/code
+      - /code/react-app/node_modules
     ports:
       - '3000:3000'
-    command: tail -f /dev/null
     depends_on:
       - backend
