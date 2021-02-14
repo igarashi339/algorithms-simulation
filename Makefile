@@ -26,7 +26,7 @@ delete-all:
 # テストを実行する
 .PHONY: test
 test:
-	docker-compose exec backend bash scripts/run_algorithm_tests.sh
+	docker-compose exec -T backend bash scripts/run_algorithm_tests.sh
 
 # キャッシュを削除してビルドする
 .PHONY: build
