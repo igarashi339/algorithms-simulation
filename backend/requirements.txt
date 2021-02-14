@@ -3,3 +3,5 @@ psycopg2
 gunicorn
 django-heroku
 parameterized
+djangorestframework
+django-cors-headers
