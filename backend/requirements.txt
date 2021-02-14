@@ -1,0 +1,7 @@
+Django==3.1
+psycopg2
+gunicorn
+django-heroku
+parameterized
+djangorestframework
+django-cors-headers
