@@ -1,13 +1,28 @@
 import logo from './logo.svg';
 import './App.css';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+
 
 function App() {
+  const API_URL = 'http://localhost:8000';
+  const [state, setState] = useState('');
+  const fetchData = () => {
+    return axios.post(API_URL, { params: { name: 'jima' } })
+  }
+  
+  useEffect(async () => {
+    const response = await fetchData();
+    const message = response.data.message;
+    setState(message)
+  }, [])
+
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          {state}
         </p>
         <a
           className="App-link"
