@@ -25,7 +25,11 @@ SECRET_KEY = '=fb8-x(3issal8a)==g86rqc4y@04@2y%q&u+_!ze=oaw68o8j'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["algorithms-simulation.herokuapp.com", "localhost"]
+ALLOWED_HOSTS = [
+    "algorithms-simulation.herokuapp.com",
+    "algorithms-simulation-api.herokuapp.com",
+    "localhost",
+]
 
 
 # Application definition
@@ -60,7 +64,8 @@ REST_FRAMEWORK = {
 }
 
 CORS_ORIGIN_WHITELIST = (
-    'http://localhost:3000',
+    'algorithms-simulation.herokuapp.com',
+    'http://localhost:3000'
 )
 
 ROOT_URLCONF = 'config.urls'
