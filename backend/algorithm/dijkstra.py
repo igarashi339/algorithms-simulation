@@ -1,4 +1,4 @@
-from backend.algorithm.models import Graph, DijkstraOneStep, DijkstraSimulation
+from algorithm.models import Graph, DijkstraOneStep, DijkstraSimulation
 
 
 class Dijkstra:
@@ -12,10 +12,10 @@ class Dijkstra:
         Dijkstra法で最短経路を求める。
         コスト最小ノードを保持するのに優先度つきキューを使用していないため、計算量はO(n^2)
         """
-        return Dijkstra.__return_dummy_simulation_object()
+        return Dijkstra.return_dummy_simulation_object()
 
     @staticmethod
-    def __return_dummy_simulation_object():
+    def return_dummy_simulation_object():
         """
         ダミーのシミュレーション結果を返す。
         アルゴリズムが完成するまでのスタブとして用いる。

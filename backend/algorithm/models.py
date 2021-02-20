@@ -74,7 +74,7 @@ class DijkstraOneStep:
 class DijkstraSimulation:
     """ Dijkstra法のステップ集合を表すクラス """
 
-    def __init__(self, graph_size, cost_matrix, start_node, goal_node, shortest_path, shortest_path_cost):
+    def __init__(self, graph_size, cost_matrix, start_node, goal_node, shortest_path, shortest_path_cost, steps):
         # グラフサイズ
         self.graph_size = graph_size
         # コスト行列(1次元)
@@ -87,3 +87,5 @@ class DijkstraSimulation:
         self.shortest_path = shortest_path
         # 最短経路のコスト
         self.shortest_path_cost = shortest_path_cost
+        # Dijkstraのステップ(DijkstraOneStep)のリスト
+        self.steps = steps

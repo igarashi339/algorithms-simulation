@@ -1,13 +1,9 @@
 from django.http import HttpResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from backend.algorithm.dijkstra import Dijkstra
-from backend.algorithm.models import Graph
+from algorithm.dijkstra import Dijkstra
+from algorithm.models import Graph
 import json
-
-
-def index(request):
-    return HttpResponse("This is Algorithm Simulate App.")
 
 
 @api_view(["GET", "POST"])
@@ -19,27 +15,18 @@ def api_test(request):
 
 def dijkstra(request):
     """ Dijkstra法の探索結果を返す(ダミー実装)"""
-
-    cost_matrix_str = ""
-    start_node_str = ""
-    goal_node_str = ""
-
-    if "cost_matrix" in request.GET:
-        cost_matrix_str = request.GET.get("cost_matrix")
-    if "start_node" in request.GET:
-        start_node_str = request.GET.get("start_node")
-    if "goal_node" in request.GET:
-        goal_node_str = request.GET.get("goal_node")
-    if cost_matrix_str == "" or start_node_str == "" or goal_node_str == "":
-        return HttpResponse("bat arguments!")
-
-    # todo: start_node_str と goal_node_str の検証はここで入れるのが良さそう
-    # Graph に IsValidNodeIndex() みたいなメソッドを入れる
-
-    graph = Graph(cost_matrix_str)
-    sim_obj = Dijkstra.calc_shortest_path(graph, int(start_node_str), int(goal_node_str))
-    sim_obj_json = json.dumps(sim_obj)
-    return {
+    graph = Graph("hoge")
+    sim_obj = Dijkstra.calc_shortest_path(graph, int("1"), int("5"))
+    # sim_obj_json = json.dumps(sim_obj)
+    json_str = {
         "status": "OK",
-        "search_info": sim_obj_json
+        "search_info": sim_obj
     }
+    return HttpResponse(json.dumps(json_str, default=default_method, indent=2))
+
+
+def default_method(item):
+    if isinstance(item, object) and hasattr(item, '__dict__'):
+        return item.__dict__
+    else:
+        raise TypeError
