@@ -5,3 +5,4 @@ django-heroku
 parameterized
 djangorestframework
 django-cors-headers
+pytest

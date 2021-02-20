@@ -13,11 +13,6 @@ down:
 shell:
 	docker-compose exec backend bash
 
-# backendコンテナの上でWebサーバを起動する
-.PHONY: server
-server:
-	docker-compose exec backend bash scripts/run_local_server.sh
-
 # すべてのコンテナとイメージを削除する
 .PHONY: delete-all
 delete-all:
@@ -26,7 +21,7 @@ delete-all:
 # テストを実行する
 .PHONY: test
 test:
-	docker-compose exec -T backend bash scripts/run_algorithm_tests.sh
+	docker-compose exec -T backend bash scripts/run_backend_tests.sh
 
 # キャッシュを削除してビルドする
 .PHONY: build
