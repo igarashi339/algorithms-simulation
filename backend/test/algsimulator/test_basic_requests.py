@@ -21,6 +21,3 @@ def test_dijkstra_stub():
         assert data_json["status"] == "OK"
         assert data_json.get("search_info")
 
-
-if __name__ == "__main__":
-    test_dijkstra_stub()
