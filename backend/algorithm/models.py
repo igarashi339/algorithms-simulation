@@ -56,3 +56,34 @@ class Graph:
         """ ノード間のコストを返す。 """
         return self.__cost_matrix[node1][node2]
 
+
+class DijkstraOneStep:
+    """ Dijkstra法の1ステップを表すクラス """
+
+    def __init__(self, min_cost_node, cost_fixed_nodes, updated_labels, updated_prev_node):
+        # コスト最小のノード
+        self.min_cost_node = min_cost_node
+        # コストが確定しているノードの集合
+        self.cost_fixed_nodes = cost_fixed_nodes
+        # 更新後の各ノードのラベル
+        self.updated_labels = updated_labels
+        # 更新後の「ひとつ前のノード」
+        self.updated_prev_node = updated_prev_node
+
+
+class DijkstraSimulation:
+    """ Dijkstra法のステップ集合を表すクラス """
+
+    def __init__(self, graph_size, cost_matrix, start_node, goal_node, shortest_path, shortest_path_cost):
+        # グラフサイズ
+        self.graph_size = graph_size
+        # コスト行列(1次元)
+        self.cost_matrix = cost_matrix
+        # スタートノード
+        self.start_node = start_node
+        # ゴールノード
+        self.goal_node = goal_node
+        # スタートノードからゴールノードまでの最短経路
+        self.shortest_path = shortest_path
+        # 最短経路のコスト
+        self.shortest_path_cost = shortest_path_cost
