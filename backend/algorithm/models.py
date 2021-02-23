@@ -1,3 +1,6 @@
+import copy
+
+
 class Graph:
     INVALID_COST = -1
 
@@ -56,6 +59,15 @@ class Graph:
         """ ノード間のコストを返す。 """
         return self.__cost_matrix[node1][node2]
 
+    # todo: 単体テスト
+    def get_cost_matrix_str(self):
+        """ コスト行列を1次元文字列にして返す。 """
+        cost_matrix_str = ""
+        for i in range(self.__size):
+            for j in range(self.__size):
+                cost_matrix_str += str(self.__cost_matrix[i][j]) + " "
+        return cost_matrix_str.strip()
+
 
 class DijkstraOneStep:
     """ Dijkstra法の1ステップを表すクラス """
@@ -64,28 +76,51 @@ class DijkstraOneStep:
         # コスト最小のノード
         self.min_cost_node = min_cost_node
         # コストが確定しているノードの集合
-        self.cost_fixed_nodes = cost_fixed_nodes
+        self.cost_fixed_nodes = copy.deepcopy(cost_fixed_nodes)
         # 更新後の各ノードのラベル
-        self.updated_labels = updated_labels
+        self.updated_labels = copy.deepcopy(updated_labels)
         # 更新後の「ひとつ前のノード」
-        self.updated_prev_node = updated_prev_node
+        self.updated_prev_node = copy.deepcopy(updated_prev_node)
+
+    def equals(self, other):
+        """ otherと自身が同じオブジェクトか判定する """
+        return self.min_cost_node == other.min_cost_node and \
+            self.cost_fixed_nodes == other.cost_fixed_nodes and \
+            self.updated_labels == other.updated_labels and \
+            self.updated_prev_node == other.updated_prev_node
 
 
 class DijkstraSimulation:
     """ Dijkstra法のステップ集合を表すクラス """
 
-    def __init__(self, graph_size, cost_matrix, start_node, goal_node, shortest_path, shortest_path_cost, steps):
+    def __init__(self, graph_size, cost_matrix, start_node, goal_node,
+                 shortest_path=[], shortest_path_cost=-1, steps=[]):
         # グラフサイズ
         self.graph_size = graph_size
         # コスト行列(1次元)
-        self.cost_matrix = cost_matrix
+        self.cost_matrix = copy.deepcopy(cost_matrix)
         # スタートノード
         self.start_node = start_node
         # ゴールノード
         self.goal_node = goal_node
         # スタートノードからゴールノードまでの最短経路
-        self.shortest_path = shortest_path
+        self.shortest_path = copy.deepcopy(shortest_path)
         # 最短経路のコスト
         self.shortest_path_cost = shortest_path_cost
         # Dijkstraのステップ(DijkstraOneStep)のリスト
-        self.steps = steps
+        self.steps = copy.deepcopy(steps)
+
+    def equals(self, other):
+        """
+        otherと自身が同じオブジェクトかどうか判定する
+        """
+        for i, step in enumerate(self.steps):
+            other_step = other.steps[i]
+            if not step.equals(other_step):
+                return False
+        return self.graph_size == other.graph_size and \
+            self.cost_matrix == other.cost_matrix and \
+            self.start_node == other.start_node and \
+            self.goal_node == other.goal_node and \
+            self.shortest_path == other.shortest_path and \
+            self.shortest_path_cost == other.shortest_path_cost

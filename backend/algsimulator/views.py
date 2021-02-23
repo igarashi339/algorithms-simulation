@@ -16,7 +16,8 @@ def api_test(request):
 def dijkstra(request):
     """ Dijkstra法の探索結果を返す(ダミー実装)"""
     graph = Graph("hoge")
-    sim_obj = Dijkstra.calc_shortest_path(graph, int("1"), int("5"))
+    dijkstra = Dijkstra(graph)
+    sim_obj = dijkstra.calc_shortest_path(int("1"), int("5"))
     json_str = {
         "status": "OK",
         "search_info": sim_obj
