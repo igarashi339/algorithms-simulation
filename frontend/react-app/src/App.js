@@ -3,9 +3,11 @@ import './App.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
+console.log(process.env.NODE_ENV)
+console.log(process.env.REACT_APP_API_URL)
+const API_URL = process.env.REACT_APP_API_URL;
 
 function App() {
-  const API_URL = 'http://localhost:8000';
   const [state, setState] = useState('');
   const fetchData = () => {
     return axios.post(API_URL, { params: { name: 'jima' } })
