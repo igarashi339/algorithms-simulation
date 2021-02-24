@@ -3,18 +3,17 @@ import './App.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
+const API_URL = process.env.REACT_APP_API_URL;
 
 function App() {
-  const API_URL = 'http://localhost:8000';
   const [state, setState] = useState('');
-  const fetchData = () => {
-    return axios.post(API_URL, { params: { name: 'jima' } })
-  }
-  
-  useEffect(async () => {
-    const response = await fetchData();
-    const message = response.data.message;
-    setState(message)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.post(API_URL, { params: { name: 'jima' } })
+      setState(response.data.message)
+    }
+    fetchData()
   }, [])
 
   return (
