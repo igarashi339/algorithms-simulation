@@ -60,13 +60,13 @@ class Graph:
         return self.__cost_matrix[node1][node2]
 
     # todo: 単体テスト
-    def get_cost_matrix_str(self):
-        """ コスト行列を1次元文字列にして返す。 """
-        cost_matrix_str = ""
+    def get_cost_matrix_list(self):
+        """ コスト行列を1次元配列にして返す。 """
+        cost_matrix_list = []
         for i in range(self.__size):
             for j in range(self.__size):
-                cost_matrix_str += str(self.__cost_matrix[i][j]) + " "
-        return cost_matrix_str.strip()
+                cost_matrix_list.append(self.__cost_matrix[i][j])
+        return cost_matrix_list
 
 
 class DijkstraOneStep:
@@ -84,10 +84,15 @@ class DijkstraOneStep:
 
     def equals(self, other):
         """ otherと自身が同じオブジェクトか判定する """
-        return self.min_cost_node == other.min_cost_node and \
-            self.cost_fixed_nodes == other.cost_fixed_nodes and \
-            self.updated_labels == other.updated_labels and \
-            self.updated_prev_node == other.updated_prev_node
+        if self.min_cost_node != other.min_cost_node:
+            return False
+        if self.cost_fixed_nodes != other.cost_fixed_nodes:
+            return False
+        if self.updated_labels != other.updated_labels:
+            return False
+        if self.updated_prev_node != other.updated_prev_node:
+            return False
+        return True
 
 
 class DijkstraSimulation:
