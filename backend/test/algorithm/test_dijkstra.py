@@ -27,31 +27,31 @@ class TestDijkstra(unittest.TestCase):
             min_cost_node=0,
             cost_fixed_nodes=[0],
             updated_labels=[0, 5, 8, -1, -1],
-            updated_prev_node={0: -1, 1: 0, 2: 0, 3: -1, 4: -1}
+            updated_prev_node=[-1, 0, 0, -1, -1]
         ))
         steps.append(DijkstraOneStep(
             min_cost_node=1,
             cost_fixed_nodes=[0, 1],
             updated_labels=[0, 5, 6, 8, 15],
-            updated_prev_node={0: -1, 1: 0, 2: 1, 3: 1, 4: 1}
+            updated_prev_node=[-1, 0, 1, 1, 1]
         ))
         steps.append(DijkstraOneStep(
             min_cost_node=2,
             cost_fixed_nodes=[0, 1, 2],
             updated_labels=[0, 5, 6, 7, 13],
-            updated_prev_node={0: -1, 1: 0, 2: 1, 3: 2, 4: 2}
+            updated_prev_node=[-1, 0, 1, 2, 2]
         ))
         steps.append(DijkstraOneStep(
             min_cost_node=3,
             cost_fixed_nodes=[0, 1, 2, 3],
             updated_labels=[0, 5, 6, 7, 12],
-            updated_prev_node={0: -1, 1: 0, 2: 1, 3: 2, 4: 3}
+            updated_prev_node=[-1, 0, 1, 2, 3]
         ))
         steps.append(DijkstraOneStep(
             min_cost_node=4,
             cost_fixed_nodes=[0, 1, 2, 3, 4],
             updated_labels=[0, 5, 6, 7, 12],
-            updated_prev_node={0: -1, 1: 0, 2: 1, 3: 2, 4: 3}
+            updated_prev_node=[-1, 0, 1, 2, 3]
         ))
         return DijkstraSimulation(graph_size=5,
                                   cost_matrix=cost_matrix,

@@ -21,7 +21,7 @@ class Dijkstra:
         node_label_list = [Dijkstra.INVALID_LABEL for i in range(self.graph.size())]
         node_label_list[start_node] = 0
         # 最短経路における一つ前のノード
-        prev_node_dict = {i: -1 for i in range(self.graph.size())}
+        prev_node_dict = [-1 for i in range(self.graph.size())]
         # dijkstra法シミュレーションオブジェクト
         dijkstra_simulation = DijkstraSimulation(graph_size=self.graph.size(),
                                                  cost_matrix=self.graph.get_cost_matrix_list(),
