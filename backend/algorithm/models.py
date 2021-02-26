@@ -82,6 +82,7 @@ class DijkstraOneStep:
         # 更新後の「ひとつ前のノード」
         self.updated_prev_node = copy.deepcopy(updated_prev_node)
 
+    # todo: 単体テスト
     def equals(self, other):
         """ otherと自身が同じオブジェクトか判定する """
         if self.min_cost_node != other.min_cost_node:
@@ -115,6 +116,7 @@ class DijkstraSimulation:
         # Dijkstraのステップ(DijkstraOneStep)のリスト
         self.steps = copy.deepcopy(steps)
 
+    # todo: 単体テスト
     def equals(self, other):
         """
         otherと自身が同じオブジェクトかどうか判定する
