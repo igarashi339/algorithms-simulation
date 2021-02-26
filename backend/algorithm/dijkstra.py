@@ -5,7 +5,7 @@ import copy
 class Dijkstra:
     """ Dijkstra法による探索を実施するクラス """
     INVALID_NODE_INDEX = -1
-    INVALID_NODE_COST = -1
+    INVALID_LABEL = -1  # 適当に大きな値にする
 
     def __init__(self, graph):
         self.graph = copy.deepcopy(graph)
@@ -17,15 +17,15 @@ class Dijkstra:
         ただし、スタートノードからゴールノードまで到達不可能な場合はNoneを返す。
         """
         # コストが確定しているノードの集合
-        cost_fixed_nodes = [start_node]
+        cost_fixed_nodes = []
         # 各ノードのラベル
-        node_label_list = [Graph.INVALID_COST for i in range(self.graph.size())]
+        node_label_list = [Dijkstra.INVALID_LABEL for i in range(self.graph.size())]
         node_label_list[start_node] = 0
         # 最短経路における一つ前のノード
-        prev_node_dict = {start_node: -1}
+        prev_node_dict = {i: -1 for i in range(self.graph.size())}
         # dijkstra法シミュレーションオブジェクト
         dijkstra_simulation = DijkstraSimulation(graph_size=self.graph.size(),
-                                                 cost_matrix=self.graph.get_cost_matrix_str(),
+                                                 cost_matrix=self.graph.get_cost_matrix_list(),
                                                  start_node=start_node,
                                                  goal_node=goal_node)
         while goal_node not in cost_fixed_nodes:
@@ -33,15 +33,16 @@ class Dijkstra:
             if min_cost_node == Dijkstra.INVALID_NODE_INDEX:
                 # start_node から goal_node に到達不可能なので探索打ち切り
                 return None
+            cost_fixed_nodes.append(min_cost_node)
             # コストを確定したノードに隣接しているノードのコストを更新
             adjacent_nodes = self.get_all_adjacent_nodes(min_cost_node)
             for dst_node in adjacent_nodes:
                 if dst_node in cost_fixed_nodes:
                     continue
                 new_cost = node_label_list[min_cost_node] + self.graph.get_cost(min_cost_node, dst_node)
-            if new_cost < node_label_list[dst_node]:
-                prev_node_dict[dst_node] = min_cost_node
-                node_label_list[dst_node] = new_cost
+                if node_label_list[dst_node] == Dijkstra.INVALID_LABEL or new_cost < node_label_list[dst_node]:
+                    prev_node_dict[dst_node] = min_cost_node
+                    node_label_list[dst_node] = new_cost
             # シミュレーションオブジェクトを更新
             dijkstra_one_step = DijkstraOneStep(min_cost_node=min_cost_node,
                                                 cost_fixed_nodes=cost_fixed_nodes,
@@ -66,9 +67,9 @@ class Dijkstra:
                 continue
             target_cost = node_label_list[node_index]
             # ラベルが無効値の場合はスキップ
-            if target_cost == Graph.INVALID_COST:
+            if target_cost == Dijkstra.INVALID_LABEL:
                 continue
-            if min_cost < target_cost:
+            if target_cost < min_cost:
                 min_cost = target_cost
                 min_node_index = node_index
         return min_node_index
@@ -94,6 +95,7 @@ class Dijkstra:
         while prev_node_dict[target_node] != -1:
             target_node = prev_node_dict[target_node]
             shortest_path.append(target_node)
+        shortest_path.reverse()
         return shortest_path
 
     @staticmethod
