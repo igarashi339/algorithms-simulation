@@ -26,10 +26,14 @@ class ErrorCode(Enum):
         if e == ErrorCode.SE4:
             return "Given Json can't parse."
         if e == ErrorCode.UE1:
-            return "The graph generated from cost_matrix is invalid."
+            return "start_node is not a natural number"
         if e == ErrorCode.UE2:
-            return "start_node is not exist in the graph."
+            return "goal_node is not a natual number"
         if e == ErrorCode.UE3:
-            return "goal_node is not exist in the graph."
+            return "The graph generated from cost_matrix is invalid."
         if e == ErrorCode.UE4:
+            return "start_node is not exist in the graph."
+        if e == ErrorCode.UE5:
+            return "goal_node is not exist in the graph."
+        if e == ErrorCode.UE6:
             return "There is no path in the graph from start_node to goal_node."

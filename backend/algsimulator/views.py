@@ -28,20 +28,24 @@ def dijkstra(request):
         return http_error_response(ErrorCode.SE2)
     if "cost_matrix" not in datas:
         return http_error_response(ErrorCode.SE3)
+    if type(datas["start_node"]) is not int:
+        return http_error_response(ErrorCode.UE1)
+    if type(datas["goal_node"]) is not int:
+        return http_error_response(ErrorCode.UE2)
     start_node = int(datas["start_node"])
     goal_node = int(datas["goal_node"])
     cost_matrix = datas["cost_matrix"]
     graph = Graph(cost_matrix)
     if not graph.is_valid():
-        return http_error_response(ErrorCode.UE1)
-    if start_node < 0 or graph.size() <= start_node:
-        return http_error_response(ErrorCode.UE2)
-    if goal_node < 0 or graph.size() <= goal_node:
         return http_error_response(ErrorCode.UE3)
+    if start_node < 0 or graph.size() <= start_node:
+        return http_error_response(ErrorCode.UE4)
+    if goal_node < 0 or graph.size() <= goal_node:
+        return http_error_response(ErrorCode.UE5)
     dijkstra = Dijkstra(graph)
     sim_obj = dijkstra.calc_shortest_path(start_node, goal_node)
     if not sim_obj:
-        return http_error_response(ErrorCode.UE4)
+        return http_error_response(ErrorCode.UE6)
     json_str = {
         "status": "OK",
         "search_info": sim_obj
