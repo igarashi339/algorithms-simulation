@@ -52,7 +52,6 @@ class Dijkstra:
         dijkstra_simulation.shortest_path = Dijkstra.trace(prev_node_dict, start_node, goal_node)
         return dijkstra_simulation
 
-    # todo: 単体テスト
     def find_min_cost_node(self, cost_fixed_nodes, node_label_list):
         """
         コストが未確定のノードのうちラベルが最も小さいものを返す。
@@ -73,7 +72,6 @@ class Dijkstra:
                 min_node_index = node_index
         return min_node_index
 
-    # todo: 単体テスト
     def get_all_adjacent_nodes(self, target_node):
         """
         target_nodeに隣接しているすべてのノードのリストを返す。
@@ -84,7 +82,6 @@ class Dijkstra:
                 adjacent_nodes.append(dst_node)
         return adjacent_nodes
 
-    # todo: 単体テスト
     @staticmethod
     def trace(prev_node_dict, start_node, goal_node):
         """ 探索結果をもとにスタートノードからゴールノードまでのノード列を求める """
