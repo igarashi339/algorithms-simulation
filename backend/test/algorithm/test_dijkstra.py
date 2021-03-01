@@ -1,7 +1,6 @@
 import unittest
 from algorithm.models import Graph, DijkstraSimulation, DijkstraOneStep
 from algorithm.dijkstra import Dijkstra
-from parameterized import parameterized
 
 
 class TestDijkstra(unittest.TestCase):
