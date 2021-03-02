@@ -43,7 +43,6 @@ export const Dijkstra = () => {
     setResponse(result)
   }
 
-  console.log(response)
   return (
     <Box className={classes.root}>
       {inputs.map((row, index) =>
