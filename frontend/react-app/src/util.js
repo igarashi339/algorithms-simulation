@@ -14,7 +14,7 @@ export const createRequestBody = (arr) => {
 
   // 入力の期待値が数値のものを数値に変換
   const result = arr.map(row => {
-    return row.type === 'number' ? assoc('value', Number(row.value), row) : row;
+    return row.type === 'number' ? assoc('value', parseInt(row.value), row) : row;
   })
 
   // 配列からオブジェクトに変換
