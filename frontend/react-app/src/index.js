@@ -1,14 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { Sample } from './Sample';
+import { Dijkstra } from './Dijkstra';
 
 ReactDOM.render(
   <React.StrictMode>
-    {/* <App /> */}
-    <Sample />
+    <Dijkstra />
   </React.StrictMode>,
   document.getElementById('root')
 );
