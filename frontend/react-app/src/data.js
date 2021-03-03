@@ -1,4 +1,4 @@
-export const dijkstraInput = [
+export const dijkstraInputs = [
   {
     key: 'startNode',
     value: '',
