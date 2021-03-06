@@ -1,19 +1,19 @@
 export const dijkstraInputs = [
   {
     key: 'startNode',
-    value: '',
+    value: 0,
     label: '開始ノード',
     type: 'number'
   },
   {
     key: 'goalNode',
-    value: '',
+    value: 4,
     label: '終了ノード',
     type: 'number'
   },
   {
     key: 'costMatrix',
-    value: '',
+    value: '5 -1 5 8 -1 -1 -1 -1 1 3 10 3 -1 -1 1 7 -1 4 -1 -1 5 -1 -1 -1 -1 -1',
     label: 'コスト行列',
     type: 'string'
   }
