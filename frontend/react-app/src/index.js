@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { Dijkstra } from './Dijkstra';
+import { Dijkstra } from './dijkstra/Dijkstra';
 
 ReactDOM.render(
   <React.StrictMode>

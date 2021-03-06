@@ -1,10 +1,10 @@
 import { TextField, makeStyles, Box, Button, CircularProgress } from '@material-ui/core';
 import axios from 'axios';
-import { assoc, pipe, range, splitEvery, update } from 'ramda';
+import { assoc, update } from 'ramda';
 import { useEffect, useState } from 'react';
-import { dijkstraInputs } from './data'
-import { createRequestBody } from './util'
-import * as vis from 'vis';
+import { dijkstraInputs } from '../data';
+import { createRequestBody, drawGraph } from '../util';
+import { parseDijkstraResponse } from './dijkstra';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -54,61 +54,7 @@ export const Dijkstra = () => {
     const response = await axios.post(API_URL + '/dijkstra/', createRequestBody(inputs))
 
     // レスポンスを整形する
-    if (response.data.status === 'OK') {
-      const graphSize = response.data.search_info.graph_size;
-      const costMatrix = response.data.search_info.cost_matrix;
-      const parsedMatrix = splitEvery(graphSize, costMatrix);
-      const nodes = range(0, graphSize).map(index => {
-        return pipe(
-          assoc('id', index),
-          assoc('label', String(index + 1))
-        )({})
-      });
-      const edges = [];
-      parsedMatrix.forEach((row, rIndex) => {
-        row.forEach((cost, cIndex) => {
-          if (cost > 0) {
-            edges.push({
-              from: rIndex,
-              to: cIndex,
-              label: String(cost),
-              arrows: 'to'
-            })
-          }
-        })
-      })
-      setResult({ nodes, edges })
-      setControl(2)
-    }
-    // エラーの場合はなんかする
-    else {
-      setResult(response.data.error_message)
-      setControl(3)
-    }
-  }
-
-  const drawGraph = (nodes, edges) => {
-    const container = document.getElementById('network');
-    const data = {
-      nodes: nodes,
-      edges: edges
-    };
-    const options = {
-      edges: {
-        chosen: false
-      },
-      interaction: {
-        dragView: false,
-        zoomView: false
-      },
-      layout: {
-        randomSeed: 0
-      },
-      nodes: {
-        chosen: false
-      },
-    };
-    new vis.Network(container, data, options);
+    parseDijkstraResponse(response, setResult, setControl)
   }
 
   useEffect(() => {
