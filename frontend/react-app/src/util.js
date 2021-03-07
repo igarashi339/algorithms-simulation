@@ -27,8 +27,8 @@ export const createRequestBody = (arr) => {
   return toSnakeCaseObject(obj)
 }
 
-export const drawGraph = (nodes, edges) => {
-  const container = document.getElementById('network');
+export const drawGraph = (id, nodes, edges) => {
+  const container = document.getElementById(id);
   const data = {
     nodes: nodes,
     edges: edges
