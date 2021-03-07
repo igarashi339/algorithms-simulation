@@ -21,7 +21,18 @@ delete-all:
 # テストを実行する
 .PHONY: test
 test:
-	docker-compose exec -T backend bash scripts/run_backend_tests.sh
+	make backend-unit-test
+	make backend-function-test
+
+# backendの単体テストを実行する
+.PHONY: backend-unit-test
+backend-unit-test:
+	docker-compose exec -T backend bash scripts/run_unit_test.sh
+
+# backendの機能テストを実行する
+.PHONY: backend-function-test
+backend-function-test:
+	docker-compose exec -T backend bash scripts/run_function_test.sh
 
 # キャッシュを削除してビルドする
 .PHONY: build
