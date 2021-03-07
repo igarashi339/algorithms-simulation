@@ -14,6 +14,7 @@ class ErrorCode(Enum):
     UE4 = auto()  # start_node がグラフ中に存在しない
     UE5 = auto()  # goal_node がグラフ中に存在しない
     UE6 = auto()  # スタートからゴールに到達できない
+    UE7 = auto()  # スタートノードとゴールノードが一致
 
     @staticmethod
     def get_message(e):
@@ -37,3 +38,5 @@ class ErrorCode(Enum):
             return "goal_node is not exist in the graph."
         if e == ErrorCode.UE6:
             return "There is no path in the graph from start_node to goal_node."
+        if e == ErrorCode.UE7:
+            return "start_node and goal_node are the same."

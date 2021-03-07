@@ -42,6 +42,8 @@ def dijkstra(request):
         return http_error_response(ErrorCode.UE4)
     if goal_node < 0 or graph.size() <= goal_node:
         return http_error_response(ErrorCode.UE5)
+    if start_node == goal_node:
+        return http_error_response(ErrorCode.UE7)
     dijkstra = Dijkstra(graph)
     sim_obj = dijkstra.calc_shortest_path(start_node, goal_node)
     if not sim_obj:

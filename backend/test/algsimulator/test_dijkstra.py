@@ -1,6 +1,5 @@
 import json
 import urllib.request
-from parameterized import parameterized
 
 BASE_URL = "http://localhost:8000/dijkstra/"
 
@@ -11,9 +10,6 @@ class TestDijkstra:
         self.headers = {
             "Content-Type": "application/json"
         }
-        self.start_node = 0
-        self.goal_node = 0
-        self.cost_matrix = "5 -1 5 8 -1 -1 -1 -1 1 3 10 3 -1 -1 1 7 -1 4 -1 -1 5 -1 -1 -1 -1 -1"
         self.body = {
             "start_node": 0,
             "goal_node": 4,
@@ -170,3 +166,18 @@ class TestDijkstra:
             assert data_json["status"] == "NG"
             assert data_json["error_code"] == "ErrorCode.UE6"
 
+    def test_start_and_goal_are_the_same(self):
+        """
+        異常系：スタートノードとゴールノードが一致している場合はエラーになることを確認
+        """
+        self.body = {
+            "start_node": 0,
+            "goal_node": 0,
+            "cost_matrix": "5 -1 5 8 -1 -1 -1 -1 1 3 10 3 -1 -1 1 7 -1 4 -1 -1 5 -1 -1 -1 -1 -1"
+        }
+        with urllib.request.urlopen(self.get_response()) as response:
+            assert response.getcode() == 200
+            data_str = response.read().decode()
+            data_json = json.loads(data_str)
+            assert data_json["status"] == "NG"
+            assert data_json["error_code"] == "ErrorCode.UE7"
