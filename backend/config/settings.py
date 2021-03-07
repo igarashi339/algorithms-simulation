@@ -66,7 +66,7 @@ REST_FRAMEWORK = {
 
 CORS_ORIGIN_WHITELIST = (
     'https://algorithms-simulation.herokuapp.com',
-    "algsim.net",
+    "https://algsim.net",
     'http://localhost:3000'
 )
 
