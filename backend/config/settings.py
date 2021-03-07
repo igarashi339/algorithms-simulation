@@ -28,6 +28,7 @@ DEBUG = False
 ALLOWED_HOSTS = [
     "algorithms-simulation.herokuapp.com",
     "algorithms-simulation-api.herokuapp.com",
+    "algsim.net",
     "localhost",
 ]
 
