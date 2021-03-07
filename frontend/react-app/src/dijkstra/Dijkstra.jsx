@@ -1,17 +1,19 @@
 import { TextField, makeStyles, Box, Button, CircularProgress } from '@material-ui/core';
 import axios from 'axios';
 import { assoc, update } from 'ramda';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { dijkstraInputs } from '../data';
 import { createRequestBody, drawGraph } from '../util';
 import { parseDijkstraResponse } from './dijkstra';
+import { DijkstraStepper } from './DijkstraStepper';
+import { DijkstraTable } from './DijkstraTable';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 const useStyles = makeStyles(() => ({
   root: {
     width: 'calc(100% - 80px)',
-    maxWidth: '600px',
+    maxWidth: '1000px',
     height: 'calc(100% - 80px)',
     padding: '40px',
     display: 'flex',
@@ -23,9 +25,18 @@ const useStyles = makeStyles(() => ({
   circular: {
     margin: '24px auto'
   },
-  network: {
-    width: '100%',
+  content: {
+    display: 'flex'
+  },
+  graph: {
+    flexBasis: '50%',
     height: '400px'
+  },
+  table: {
+    flexBasis: '50%'
+  },
+  stepper: {
+    width: '100%'
   }
 }))
 
@@ -39,7 +50,7 @@ export const Dijkstra = () => {
   const [result, setResult] = useState(null);
 
   // 画面制御
-  // 0: 初期状態, 1: ロード中, 2: 正常, 3: 異常
+  // 0: 初期状態, 1: ロード中, 2: 正常, 3: 異常（クライアント）, 4: 異常（サーバ）
   const [control, setControl] = useState(0)
 
   // インプットフィールド制御
@@ -48,18 +59,29 @@ export const Dijkstra = () => {
     setInputs(update(index, assoc('value', value, inputs[index]), inputs))
   }
 
+  const setCurrentStep = useCallback((currentStep) => {
+    setResult(assoc('currentStep', currentStep, result))
+  }, [result])
+
   // リクエスト送信
   const onClick = async () => {
     setControl(1);
-    const response = await axios.post(API_URL + '/dijkstra/', createRequestBody(inputs))
+    try {
+      const response = await axios.post(API_URL + '/dijkstra/', createRequestBody(inputs))
 
-    // レスポンスを整形する
-    parseDijkstraResponse(response, setResult, setControl)
+      // レスポンスを整形する
+      parseDijkstraResponse(response, setResult, setControl)
+    }
+    // サーバエラーの時はなんかする
+    catch (error) {
+      setResult('サーバエラー')
+      setControl(4);
+    }
   }
 
   useEffect(() => {
     if (control === 2) {
-      drawGraph(result.nodes, result.edges)
+      drawGraph('dijkstra', result.nodes, result.edges)
     }
   }, [control, result])
 
@@ -84,8 +106,25 @@ export const Dijkstra = () => {
         {'シミュレーション開始'}
       </Button>
       {control === 1 && <CircularProgress className={classes.circular} />}
-      {control === 2 && <Box id="network" className={classes.network} />}
+      {control === 2 && <>
+        <Box className={classes.content}>
+          {/* グラフ */}
+          <Box id="dijkstra" className={classes.graph} />
+          {/* 表 */}
+          <Box className={classes.table}>
+            <DijkstraTable steps={result.steps[result.currentStep]} />
+          </Box>
+        </Box>
+        {/* ステッパー */}
+        <DijkstraStepper
+          className={classes.stepper}
+          currentStep={result.currentStep}
+          length={result.steps.length}
+          setCurrentStep={setCurrentStep}
+        />
+      </>}
       {control === 3 && <Box>{result}</Box>}
+      {control === 4 && <Box>{result}</Box>}
     </Box>
   )
 }
