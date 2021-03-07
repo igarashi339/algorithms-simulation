@@ -28,6 +28,7 @@ DEBUG = False
 ALLOWED_HOSTS = [
     "algorithms-simulation.herokuapp.com",
     "algorithms-simulation-api.herokuapp.com",
+    "algsim.net",
     "localhost",
 ]
 
@@ -65,6 +66,7 @@ REST_FRAMEWORK = {
 
 CORS_ORIGIN_WHITELIST = (
     'https://algorithms-simulation.herokuapp.com',
+    "https://algsim.net",
     'http://localhost:3000'
 )
 
