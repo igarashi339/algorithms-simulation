@@ -44,6 +44,7 @@ class Dijkstra:
                     node_label_list[dst_node] = new_cost
             # シミュレーションオブジェクトを更新
             dijkstra_one_step = DijkstraOneStep(min_cost_node=min_cost_node,
+                                                adjacent_nodes=adjacent_nodes,
                                                 cost_fixed_nodes=cost_fixed_nodes,
                                                 updated_labels=node_label_list,
                                                 updated_prev_node=prev_node_dict)

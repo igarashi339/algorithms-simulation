@@ -28,30 +28,35 @@ class TestDijkstra(unittest.TestCase):
         steps = list()
         steps.append(DijkstraOneStep(
             min_cost_node=0,
+            adjacent_nodes=[1, 2],
             cost_fixed_nodes=[0],
             updated_labels=[0, 5, 8, -1, -1],
             updated_prev_node=[-1, 0, 0, -1, -1]
         ))
         steps.append(DijkstraOneStep(
             min_cost_node=1,
+            adjacent_nodes=[2, 3, 4],
             cost_fixed_nodes=[0, 1],
             updated_labels=[0, 5, 6, 8, 15],
             updated_prev_node=[-1, 0, 1, 1, 1]
         ))
         steps.append(DijkstraOneStep(
             min_cost_node=2,
+            adjacent_nodes=[0, 3, 4],
             cost_fixed_nodes=[0, 1, 2],
             updated_labels=[0, 5, 6, 7, 13],
             updated_prev_node=[-1, 0, 1, 2, 2]
         ))
         steps.append(DijkstraOneStep(
             min_cost_node=3,
+            adjacent_nodes=[1, 4],
             cost_fixed_nodes=[0, 1, 2, 3],
             updated_labels=[0, 5, 6, 7, 12],
             updated_prev_node=[-1, 0, 1, 2, 3]
         ))
         steps.append(DijkstraOneStep(
             min_cost_node=4,
+            adjacent_nodes=[],
             cost_fixed_nodes=[0, 1, 2, 3, 4],
             updated_labels=[0, 5, 6, 7, 12],
             updated_prev_node=[-1, 0, 1, 2, 3]
