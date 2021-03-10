@@ -60,8 +60,10 @@ export const parseDijkstraResponse = (response, setResult, setControl) => {
         )(row)
       })
 
-      // todo: 隣接するノードを色付け
-      const labelUpdatedGraph = initialGraph;
+      // 隣接するノードを色付け
+      const labelUpdatedGraph = cur.adjacent_nodes.reduce((acc, cur) => {
+        return assoc('nodes', update(cur, assoc('color', 'lightgreen', acc.nodes[cur]), acc.nodes), acc)
+      }, initialGraph)
       acc.push({ graph: labelUpdatedGraph, table: labelUpdatedTable })
 
       return acc;
