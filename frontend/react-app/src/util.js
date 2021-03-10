@@ -27,15 +27,15 @@ export const createRequestBody = (arr) => {
   return toSnakeCaseObject(obj)
 }
 
-export const drawGraph = (id, nodes, edges) => {
+export const drawGraph = (id, graphs, currentStep) => {
   const container = document.getElementById(id);
-  const data = {
-    nodes: nodes,
-    edges: edges
-  };
+  const data = graphs[currentStep];
   const options = {
     edges: {
-      chosen: false
+      chosen: false,
+      color: {
+        color: '#848484'
+      }
     },
     // todo: ここをうまいこといじると、リンクの重複を解消できそう
     // 要ドキュメントよみこみ https://visjs.github.io/vis-network/docs/network/

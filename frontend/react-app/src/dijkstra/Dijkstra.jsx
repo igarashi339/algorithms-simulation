@@ -50,7 +50,7 @@ export const Dijkstra = () => {
   const [result, setResult] = useState(null);
 
   // 画面制御
-  // 0: 初期状態, 1: ロード中, 2: 正常, 3: 異常（クライアント）, 4: 異常（サーバ）
+  // 0: 初期状態, 1: ロード中, 2: 正常(経路探索成功), 3: 正常(経路探索失敗), 4: 異常
   const [control, setControl] = useState(0)
 
   // インプットフィールド制御
@@ -72,16 +72,17 @@ export const Dijkstra = () => {
       // レスポンスを整形する
       parseDijkstraResponse(response, setResult, setControl)
     }
-    // サーバエラーの時はなんかする
+    // エラーの時はなんかする
     catch (error) {
-      setResult('サーバエラー')
+      console.log(error)
+      setResult('何らかのエラー')
       setControl(4);
     }
   }
 
   useEffect(() => {
     if (control === 2) {
-      drawGraph('dijkstra', result.nodes, result.edges)
+      drawGraph('dijkstra', result.graphs, result.currentStep)
     }
   }, [control, result])
 
@@ -112,14 +113,14 @@ export const Dijkstra = () => {
           <Box id="dijkstra" className={classes.graph} />
           {/* 表 */}
           <Box className={classes.table}>
-            <DijkstraTable steps={result.steps[result.currentStep]} />
+            <DijkstraTable steps={result.tables[result.currentStep]} />
           </Box>
         </Box>
         {/* ステッパー */}
         <DijkstraStepper
           className={classes.stepper}
           currentStep={result.currentStep}
-          length={result.steps.length}
+          length={result.tables.length}
           setCurrentStep={setCurrentStep}
         />
       </>}
