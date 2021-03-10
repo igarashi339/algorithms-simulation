@@ -72,9 +72,11 @@ class Graph:
 class DijkstraOneStep:
     """ Dijkstra法の1ステップを表すクラス """
 
-    def __init__(self, min_cost_node, cost_fixed_nodes, updated_labels, updated_prev_node):
+    def __init__(self, min_cost_node, adjacent_nodes, cost_fixed_nodes, updated_labels, updated_prev_node):
         # コスト最小のノード
         self.min_cost_node = min_cost_node
+        # コスト最小のノードに隣接しているノード
+        self.adjacent_nodes = adjacent_nodes
         # コストが確定しているノードの集合
         self.cost_fixed_nodes = copy.deepcopy(cost_fixed_nodes)
         # 更新後の各ノードのラベル
