@@ -3,7 +3,7 @@ from algorithm.models import Graph
 from parameterized import parameterized
 
 
-class TestModels(unittest.TestCase):
+class TestGraph(unittest.TestCase):
     @parameterized.expand(
         [
             # 正常系
@@ -29,6 +29,20 @@ class TestModels(unittest.TestCase):
         for row in range(graph_size):
             for col in range(graph_size):
                 assert graph.get_cost(row, col) == cost_matrix[row][col]
+
+    def test_get_cost_matrix_list(self):
+        """ graph内部のコストテーブルを返却するメソッドのテスト """
+        graph_str = "3 4 6 3 2 7 6 5 3 8"
+        graph = Graph(graph_str)
+        assert graph.get_cost_matrix_list() == [-1, 6, 3, 2, -1, 6, 5, 3, -1]
+
+
+class TestDijkstraOneStep(unittest.TestCase):
+    pass
+
+
+class TestDijkstraSimulation(unittest.TestCase):
+    pass
 
 
 if __name__ == "__main__":

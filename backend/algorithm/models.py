@@ -59,7 +59,6 @@ class Graph:
         """ ノード間のコストを返す。 """
         return self.__cost_matrix[node1][node2]
 
-    # todo: 単体テスト
     def get_cost_matrix_list(self):
         """ コスト行列を1次元配列にして返す。 """
         cost_matrix_list = []
