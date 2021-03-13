@@ -1,7 +1,7 @@
 # すべてのサービスを起動
 .PHONY: up
 up:
-	docker-compose up -d
+	COMPOSE_HTTP_TIMEOUT=240 docker-compose up -d
 
 # すべてのサービスを停止
 .PHONY: down
