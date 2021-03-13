@@ -59,7 +59,6 @@ class Graph:
         """ ノード間のコストを返す。 """
         return self.__cost_matrix[node1][node2]
 
-    # todo: 単体テスト
     def get_cost_matrix_list(self):
         """ コスト行列を1次元配列にして返す。 """
         cost_matrix_list = []
@@ -84,7 +83,6 @@ class DijkstraOneStep:
         # 更新後の「ひとつ前のノード」
         self.updated_prev_node = copy.deepcopy(updated_prev_node)
 
-    # todo: 単体テスト
     def equals(self, other):
         """ otherと自身が同じオブジェクトか判定する """
         if self.min_cost_node != other.min_cost_node:
@@ -94,6 +92,8 @@ class DijkstraOneStep:
         if self.updated_labels != other.updated_labels:
             return False
         if self.updated_prev_node != other.updated_prev_node:
+            return False
+        if self.adjacent_nodes != other.adjacent_nodes:
             return False
         return True
 
@@ -118,7 +118,6 @@ class DijkstraSimulation:
         # Dijkstraのステップ(DijkstraOneStep)のリスト
         self.steps = copy.deepcopy(steps)
 
-    # todo: 単体テスト
     def equals(self, other):
         """
         otherと自身が同じオブジェクトかどうか判定する
