@@ -1,14 +1,11 @@
 import { TextField, makeStyles, Box, Button, CircularProgress } from '@material-ui/core';
-import axios from 'axios';
 import { assoc, update } from 'ramda';
-import { useCallback, useEffect, useState } from 'react';
-import { dijkstraInputs } from '../data';
-import { createRequestBody, drawGraph } from '../util';
-import { parseDijkstraResponse } from './dijkstra';
+import { useEffect, useState } from 'react';
+import { drawDijkstraGraph, dijkstraParser } from './dijkstra';
 import { DijkstraStepper } from './DijkstraStepper';
 import { DijkstraTable } from './DijkstraTable';
-
-const API_URL = process.env.REACT_APP_API_URL;
+import { dijkstraInputs } from './inputs';
+import { useGetResponse } from '../hooks'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -47,11 +44,7 @@ export const Dijkstra = () => {
   const [inputs, setInputs] = useState(dijkstraInputs);
 
   // 結果
-  const [result, setResult] = useState(null);
-
-  // 画面制御
-  // 0: 初期状態, 1: ロード中, 2: 正常(経路探索成功), 3: 正常(経路探索失敗), 4: 異常
-  const [control, setControl] = useState(0)
+  const { control, result, execute, setResult } = useGetResponse('dijkstra', dijkstraParser);
 
   // インプットフィールド制御
   const onChange = index => event => {
@@ -59,30 +52,17 @@ export const Dijkstra = () => {
     setInputs(update(index, assoc('value', value, inputs[index]), inputs))
   }
 
-  const setCurrentStep = useCallback((currentStep) => {
+  const setCurrentStep = (currentStep) => {
     setResult(assoc('currentStep', currentStep, result))
-  }, [result])
+  }
 
-  // リクエスト送信
-  const onClick = async () => {
-    setControl(1);
-    try {
-      const response = await axios.post(API_URL + '/dijkstra/', createRequestBody(inputs))
-
-      // レスポンスを整形する
-      parseDijkstraResponse(response, setResult, setControl)
-    }
-    // エラーの時はなんかする
-    catch (error) {
-      console.log(error)
-      setResult('何らかのエラー')
-      setControl(4);
-    }
+  const onClick = () => {
+    execute(inputs)
   }
 
   useEffect(() => {
     if (control === 2) {
-      drawGraph('dijkstra', result.graphs, result.currentStep)
+      drawDijkstraGraph('dijkstra', result.graphs, result.currentStep)
     }
   }, [control, result])
 
