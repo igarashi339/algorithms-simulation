@@ -9,10 +9,6 @@ import { useGetResponse } from '../hooks'
 
 const useStyles = makeStyles(() => ({
   root: {
-    width: 'calc(100% - 80px)',
-    maxWidth: '1000px',
-    height: 'calc(100% - 80px)',
-    padding: '40px',
     display: 'flex',
     flexDirection: 'column'
   },
