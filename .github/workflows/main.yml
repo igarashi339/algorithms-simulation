@@ -10,5 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: make up
+      - run: make frontend-test
       - run: make backend-unit-test
       - run: make backend-function-test
