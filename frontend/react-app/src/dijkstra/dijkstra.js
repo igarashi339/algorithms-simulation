@@ -134,6 +134,19 @@ export const drawDijkstraGraph = (id, graphs, currentStep) => {
         color: '#848484'
       }
     },
+    // todo: ここをうまいこといじると、リンクの重複を解消できそう
+    // 要ドキュメントよみこみ https://visjs.github.io/vis-network/docs/network/
+    // physics: {
+    //   enabled: true,
+    //   hierarchicalRepulsion: {
+    //     centralGravity: 0.0,
+    //     springLength: 500,
+    //     springConstant: 0.01,
+    //     nodeDistance: 100,
+    //     damping: 0.09
+    //   },
+    //   solver: 'hierarchicalRepulsion'
+    // },
     interaction: {
       dragView: false,
       zoomView: false
