@@ -10,6 +10,7 @@ export const dijkstraParser = (response, setControl, setResult) => {
 
   if (response.data.status !== 'OK') {
     // todo: OKでもNGでもないためシステムエラー処理を追加する
+    setControl(4)
     return;
   }
 
