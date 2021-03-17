@@ -21,8 +21,14 @@ delete-all:
 # テストを実行する
 .PHONY: test
 test:
+	make frontend-test
 	make backend-unit-test
 	make backend-function-test
+
+# frontendのテストを実行する
+.PHONY: frontend-test
+frontend-test:
+	docker-compose exec -T frontend sh scripts/run_test.sh
 
 # backendの単体テストを実行する
 .PHONY: backend-unit-test
