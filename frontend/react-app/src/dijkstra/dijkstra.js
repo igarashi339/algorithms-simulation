@@ -15,6 +15,7 @@ export const dijkstraParser = (response, setControl, setResult) => {
   }
 
   const initialGraph = getInitialGraph(response)
+  const hoge = makeColoredGraph(response, initialGraph)
 
   // 各ステップのグラフと表を作成
   const steps = calcSteps(response, initialGraph)
@@ -37,7 +38,8 @@ export const getInitialGraph = (response) => {
   const parsedMatrix = splitEvery(graphSize, costMatrix);
   const nodes = range(0, graphSize).map(index => ({
     id: index,
-    label: String(index)
+    label: String(index),
+    color: undefined
   }));
   const edges = parsedMatrix.reduce((acc, cur, index) => {
     cur.forEach((cost, cIndex) => {
@@ -57,6 +59,49 @@ export const getInitialGraph = (response) => {
     nodes: nodes,
     edges: edges
   };
+}
+
+export const makeColoredGraph = (response, graph)  => {
+  const minCostNodeColor = 'yellow'
+  const labelUpdateNodeColor = 'lightgreen'
+  const shortestPathColor = 'salmon'
+  const startNodeColor = 'red'
+  const goalNodeColor = 'red'
+
+  // const updateGraph = (nodeId, color, graph) => {
+  //   const updatedNode = assoc('color', minCostNodeColor, graph.nodes[nodeId])
+  //   const updatedNodes = update(nodeId, updatedNode, graph.nodes)
+  //   return assoc('nodes', updatedNodes, graph)
+  // }
+
+  const steps = response.data.search_info.steps;
+  const coloredGraph = steps.reduce((acc, cur) => {
+    // コスト最小ノードの色を更新
+    const mincostNodeUpdatedGraph = () => {
+      const nodeId = cur.min_cost_node
+      const updatedNode = assoc('color', minCostNodeColor, graph.nodes[nodeId])
+      const updatedNodes = update(nodeId, updatedNode, graph.nodes)
+      return assoc('nodes', updatedNodes, graph)
+    }
+    acc.push(mincostNodeUpdatedGraph)
+    // ラベル更新対象ノードの色を更新
+    const colorUpdatedGraph = cur.adjacent_nodes.reduce((acc, cur) => {
+      const updatedNode = assoc('color', labelUpdateNodeColor, acc.nodes[cur])
+      const updatedNodes = update(cur, updatedNode, acc.nodes)
+      return assoc('nodes', updatedNodes, acc)
+    }, graph)
+    acc.push(colorUpdatedGraph)
+    return acc
+  }, [])
+  // shortest path上のノードの色を更新
+  // const shortestPathColoredGraph = response.shortestPath.reduce((acc, cur) => {
+  //   const updatedNode = assoc('color', shortestPathColor, acc.nodes[cur])
+  //   const updatedNodes = update(cur, updatedNode, acc.nodes)
+  //   return assoc('nodes', updatedNodes, acc)
+  // }, {graph:colorUpdatedGraph})
+
+  // startNode, goalNodeの色を更新
+
 }
 
 export const calcSteps = (response, graph) => {
@@ -79,7 +124,8 @@ export const calcSteps = (response, graph) => {
       assoc('fixed', true, lastTable[minCostNode]),
       lastTable
     );
-    const costUpdatedGraph = assoc('nodes', update(minCostNode, assoc('color', 'yellow', graph.nodes[minCostNode]), graph.nodes), graph);
+    const costUpdatedGraph = assoc('nodes', 
+                                   update(minCostNode, assoc('color', 'yellow', graph.nodes[minCostNode]), graph.nodes), graph);
     acc.push({ graph: costUpdatedGraph, table: costUpdatedTable });
 
     // ラベルとひとつ前のノードを更新
