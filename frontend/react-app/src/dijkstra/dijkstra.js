@@ -41,14 +41,15 @@ export const getInitialGraph = (response) => {
   }));
   const edges = parsedMatrix.reduce((acc, cur, index) => {
     cur.forEach((cost, cIndex) => {
-      if (cost > 0) {
-        acc.push({
-          from: index,
-          to: cIndex,
-          label: String(cost),
-          arrows: 'to'
-        })
+      if (cost <= 0) {
+        return;
       }
+      acc.push({
+        from: index,
+        to: cIndex,
+        label: String(cost),
+        arrows: 'to'
+      })
     })
     return acc;
   }, [])
