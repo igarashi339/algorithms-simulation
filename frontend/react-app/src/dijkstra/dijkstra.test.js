@@ -43,98 +43,82 @@ test(
   }
 )
 
-// test.each(
-//   [
-//     [0, 1, "5"],
-//     [1, 2, "1"],
-//     [1, 4, "10"],
-//     [3, 4, "5"]
-//   ]
-//   )("getInitialGraphTest: checkLabel: from=%i, to=%i, label=%s", (from, to, label) => {
-//     expect(initialGraph.edges.find(
-//       link => link.from === from && link.to === to )["label"]).toBe(label)
-//   }
-// )
+test.each(
+  [
+    [0, 1, "5"]
+  ]
+) (
+  "edgeCostTest: from=%i, to=%i, cost=%s", (from, to, cost) => {
+    coloredGraph.forEach( graph => {
+      const targetEdge = graph.edges.find(edge => edge.from === from && edge.to === to)
+      expect(targetEdge.label).toBe(cost)
+    })
+  }
+)
 
-// test(
-//   "calcStepsTest: checkSize", () => {
-//     const graphs = steps.map(step => step.graph)
-//     const tables = steps.map(step => step.table)
-//     expect(graphs.length).toBe(11)
-//     expect(tables.length).toBe(11)
-//   }
-// )
+test.each(
+  [
+    [0, 0, undefined] 
+  ]
+)(
+  "nodeColorTest: step=%i, node=%i, color=%s", (step, nodeId, color) => {
+    const targetGraph = coloredGraph[step]
+    const targetNode = targetGraph.nodes.find(node => node.id === nodeId)
+    expect(targetNode.color).toBe(color)
+  }
+)
 
-// test.each(
-//   [
-//     [1, 0, "yellow", true, -1, -1],
-//   ]
-// )
+test.each(
+  [
+    // todo: colorが定義されているedgeとされていないedgeが存在するため修正
+    [10, 0, 1, "red"]
+  ]
+)(
+  "edgeColorTest: step=%i, from=%i, to=%i, color=%s", (step, from, to, color) => {
+    const targetGraph = coloredGraph[step]
+    const targetEdge = targetGraph.edges.find(edge => edge.from === from && edge.to === to)
+    // todo: colorが不必要に入れ子になっているため修正
+    expect(targetEdge.color.color).toBe(color)
+  }
+)
 
-// test.each(
-//   [
-//     [1, 0, "yellow"],
-//     [2, 1, "lightgreen"],
-//     [2, 2, "lightgreen"],
-//     [3, 1, "yellow"],
-//     [4, 2, "lightgreen"],
-//     [4, 3, "lightgreen"],
-//     [4, 4, "lightgreen"],
-//     [7, 3, "yellow"],
-//     [8, 1, "lightgreen"],
-//     [8, 4, "lightgreen"]
-//   ]
-// )(
-//   "calcStepTest: checkNodeColor: step=%i, node=%i, color=%s", (stepIndex, nodeIndex, color) => {
-//     const graphs = steps.map(step => step.graph)
-//     const graph = graphs[stepIndex]
-//     const targetNode = graph.nodes.find(node => node.id === nodeIndex)
-//     expect(targetNode.color).toBe(color)
-//   }
-// )
-
-// test.each(
-//   [
-//     [0, 0, false, -1, -1],
-//     [0, 1, false, -1, -1],
-//     [0, 2, false, -1, -1],
-//     [0, 3, false, -1, -1],
-//     [0, 4, false, -1, -1],
-//     [1, 0, true, -1, -1],
-//     [1, 1, false, -1, -1],
-//     [1, 2, false, -1, -1],
-//     [1, 3, false, -1, -1],
-//     [1, 4, false, -1, -1],
-//     [2, 0, true, 0, -1],
-//     [2, 1, false, 5, 0],
-//     [2, 2, false, 8, 0],
-//     [2, 3, false, -1, -1],
-//     [2, 4, false, -1, -1],
-//     [3, 0, true, 0, -1],
-//     [3, 1, true, 5, 0],
-//     [3, 2, false, 8, 0],
-//     [3, 3, false, -1, -1],
-//     [3, 4, false, -1, -1],
-//     [4, 0, true, 0, -1],
-//     [4, 1, true, 5, 0],
-//     [4, 2, false, 6, 1],
-//     [4, 3, false, 8, 1],
-//     [4, 4, false, 15, 1],
-//   ]
-// )(
-//   "calcStepTest: checkTable: step=%i, node=%i, fixed=%i, prevNode=%i", (step, nodeIndex, fixed, prevNode) => {
-//     const table = steps.map(step => step.table)[step]
-//     const targetNode = table.find(node => node.id === nodeIndex)
-//     expect(targetNode.fixed).toBe(fixed)
-//     expect(targetNode.prevNode).toBe(prevNode)
-//   }
-// )
-
-// test(
-//   "calcColoredGraphTest", () => {
-
-//   }
-// );
+test.each(
+  [
+    [0, 0, false, -1, -1],
+    [0, 1, false, -1, -1],
+    [0, 2, false, -1, -1],
+    [0, 3, false, -1, -1],
+    [0, 4, false, -1, -1],
+    [1, 0, true, -1, -1],
+    [1, 1, false, -1, -1],
+    [1, 2, false, -1, -1],
+    [1, 3, false, -1, -1],
+    [1, 4, false, -1, -1],
+    [2, 0, true, 0, -1],
+    [2, 1, false, 5, 0],
+    [2, 2, false, 8, 0],
+    [2, 3, false, -1, -1],
+    [2, 4, false, -1, -1],
+    [3, 0, true, 0, -1],
+    [3, 1, true, 5, 0],
+    [3, 2, false, 8, 0],
+    [3, 3, false, -1, -1],
+    [3, 4, false, -1, -1],
+    [4, 0, true, 0, -1],
+    [4, 1, true, 5, 0],
+    [4, 2, false, 6, 1],
+    [4, 3, false, 8, 1],
+    [4, 4, false, 15, 1],
+  ]
+)(
+  "tableTest: step=%i, node=%i, fixed=%s, label=%i, prevNode=%i", (step, nodeIndex, fixed, label, prevNode) => {
+    const table = tables[step]
+    const targetRow = table.find(row => row.id === nodeIndex)
+    expect(targetRow.fixed).toBe(fixed)
+    expect(targetRow.label).toBe(label)
+    expect(targetRow.prevNode).toBe(prevNode)
+  }
+)
 
 const getTargetResponse = () => {
     return { "data" : {
