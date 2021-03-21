@@ -15,24 +15,17 @@ export const dijkstraParser = (response, setControl, setResult) => {
   }
 
   const initialGraph = getInitialGraph(response)
-  const hoge = makeColoredGraph(response, initialGraph)
+  const coloredGraph = makeColoredGraphs(response, initialGraph)
 
   // 各ステップのグラフと表を作成
   const steps = calcSteps(response, initialGraph)
-  const graphs = steps.map(step => step.graph);
   const tables = steps.map(step => step.table);
-
-  // 開始ノード、終了ノード、最短経路を色付け
-  const startNode = response.data.search_info.start_node;
-  const goalNode = response.data.search_info.goal_node;
-  const shortestPath = response.data.search_info.shortest_path;
-  const coloredGraph = calcColoredGraph(initialGraph, graphs, startNode, goalNode, shortestPath)
 
   setResult({ graphs: coloredGraph, tables, currentStep: 0 })
   setControl(2)
 }
 
-export const getInitialGraph = (response) => {
+export const getInitialGraph= (response) => {
   const graphSize = response.data.search_info.graph_size;
   const costMatrix = response.data.search_info.cost_matrix;
   const parsedMatrix = splitEvery(graphSize, costMatrix);
@@ -61,47 +54,53 @@ export const getInitialGraph = (response) => {
   };
 }
 
-export const makeColoredGraph = (response, graph)  => {
+// ベースになるgraphsを作成 -> ndoeを着色 -> edgeを着色
+// という流れにしたほうが見通しがよい
+export const makeColoredGraphs = (response, graph)  => {
   const minCostNodeColor = 'yellow'
   const labelUpdateNodeColor = 'lightgreen'
   const shortestPathColor = 'salmon'
   const startNodeColor = 'red'
   const goalNodeColor = 'red'
 
-  // const updateGraph = (nodeId, color, graph) => {
-  //   const updatedNode = assoc('color', minCostNodeColor, graph.nodes[nodeId])
-  //   const updatedNodes = update(nodeId, updatedNode, graph.nodes)
-  //   return assoc('nodes', updatedNodes, graph)
-  // }
+  const updateGraph = (nodeId, color) => (graph) => {
+    const updatedNode = assoc('color', color, graph.nodes[nodeId])
+    const updatedNodes = update(nodeId, updatedNode, graph.nodes)
+    return assoc('nodes', updatedNodes, graph)
+  }
 
   const steps = response.data.search_info.steps;
-  const coloredGraph = steps.reduce((acc, cur) => {
+  const coloredGraphs = steps.reduce((acc, cur) => {
     // コスト最小ノードの色を更新
-    const mincostNodeUpdatedGraph = () => {
-      const nodeId = cur.min_cost_node
-      const updatedNode = assoc('color', minCostNodeColor, graph.nodes[nodeId])
-      const updatedNodes = update(nodeId, updatedNode, graph.nodes)
-      return assoc('nodes', updatedNodes, graph)
-    }
-    acc.push(mincostNodeUpdatedGraph)
+    const mincostNodeColoredGraph = updateGraph(cur.min_cost_node, minCostNodeColor)(graph)
+    acc.push(mincostNodeColoredGraph)
     // ラベル更新対象ノードの色を更新
-    const colorUpdatedGraph = cur.adjacent_nodes.reduce((acc, cur) => {
-      const updatedNode = assoc('color', labelUpdateNodeColor, acc.nodes[cur])
-      const updatedNodes = update(cur, updatedNode, acc.nodes)
-      return assoc('nodes', updatedNodes, acc)
+    const labelUpdateNodeColoredGraph = cur.adjacent_nodes.reduce((acc, cur) => {
+      return updateGraph(cur, labelUpdateNodeColor)(acc)
     }, graph)
-    acc.push(colorUpdatedGraph)
+    acc.push(labelUpdateNodeColoredGraph)
     return acc
-  }, [])
+  }, [graph])
+
+  // goalNodeのコストが確定した後のラベル更新処理はカットする
+  const slicedGraphs = coloredGraphs.slice(0, -1)
+  
   // shortest path上のノードの色を更新
-  // const shortestPathColoredGraph = response.shortestPath.reduce((acc, cur) => {
-  //   const updatedNode = assoc('color', shortestPathColor, acc.nodes[cur])
-  //   const updatedNodes = update(cur, updatedNode, acc.nodes)
-  //   return assoc('nodes', updatedNodes, acc)
-  // }, {graph:colorUpdatedGraph})
+  const shortestPath = response.data.search_info.shortest_path
+  const shortestPathColoredGraph = shortestPath.reduce((acc, cur) => {
+    return updateGraph(cur, shortestPathColor)(acc)
+  }, graph)
 
   // startNode, goalNodeの色を更新
+  const startNode = response.data.search_info.start_node
+  const goalNode = response.data.search_info.goal_node
+  const finalGraph = pipe(
+    updateGraph(startNode, startNodeColor),
+    updateGraph(goalNode, goalNodeColor)
+  )(shortestPathColoredGraph)
+  slicedGraphs.push(finalGraph)
 
+  return slicedGraphs
 }
 
 export const calcSteps = (response, graph) => {
