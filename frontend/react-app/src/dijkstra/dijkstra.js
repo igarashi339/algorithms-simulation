@@ -31,7 +31,7 @@ export const dijkstraParser = (response, setControl, setResult) => {
   setControl(2)
 }
 
-const getInitialGraph = (response) => {
+export const getInitialGraph = (response) => {
   const graphSize = response.data.search_info.graph_size;
   const costMatrix = response.data.search_info.cost_matrix;
   const parsedMatrix = splitEvery(graphSize, costMatrix);
@@ -58,7 +58,7 @@ const getInitialGraph = (response) => {
   };
 }
 
-const calcSteps = (response, graph) => {
+export const calcSteps = (response, graph) => {
   // 初期テーブル作成
   const graphSize = response.data.search_info.graph_size;
   const initialTable = range(0, graphSize).map(index => ({
@@ -99,7 +99,7 @@ const calcSteps = (response, graph) => {
   }, [{ graph: graph, table: initialTable }])
 }
 
-const calcColoredGraph = (initialGraph, graphs, startNode, goalNode, shortestPath) => {
+export const calcColoredGraph = (initialGraph, graphs, startNode, goalNode, shortestPath) => {
   const colordedEdges = initialGraph.edges.map(edge => {
     if (aperture(2, shortestPath).some(([from, to]) => (edge.from === from && edge.to === to))) {
       return assoc('color', { color: 'red' }, edge)
