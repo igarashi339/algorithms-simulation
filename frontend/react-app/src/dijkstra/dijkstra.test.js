@@ -45,7 +45,16 @@ test(
 
 test.each(
   [
-    [0, 1, "5"]
+    [0, 1, "5"],
+    [0, 2, "8"],
+    [1, 2, "1"],
+    [1, 3, "3"],
+    [1, 4, "10"],
+    [2, 0, "3"],
+    [2, 3, "1"],
+    [2, 4, "7"],
+    [3, 1, "4"],
+    [3, 4, "5"],
   ]
 ) (
   "edgeCostTest: from=%i, to=%i, cost=%s", (from, to, cost) => {
@@ -58,7 +67,26 @@ test.each(
 
 test.each(
   [
-    [0, 0, undefined] 
+    [0, 0, undefined],
+    [0, 1, undefined],
+    [0, 2, undefined],
+    [0, 3, undefined],
+    [0, 4, undefined],
+    [1, 0, "yellow"],
+    [1, 1, undefined],
+    [1, 2, undefined],
+    [1, 3, undefined],
+    [1, 4, undefined],
+    [2, 0, undefined],
+    [2, 1, "lightgreen"],
+    [2, 2, "lightgreen"],
+    [2, 3, undefined],
+    [2, 4, undefined],
+    [10, 0, "red"],
+    [10, 1, "salmon"],
+    [10, 2, "salmon"],
+    [10, 3, "salmon"],
+    [10, 4, "red"],
   ]
 )(
   "nodeColorTest: step=%i, node=%i, color=%s", (step, nodeId, color) => {
@@ -71,7 +99,10 @@ test.each(
 test.each(
   [
     // todo: colorが定義されているedgeとされていないedgeが存在するため修正
-    [10, 0, 1, "red"]
+    [10, 0, 1, "red"],
+    [10, 1, 2, "red"],
+    [10, 2, 3, "red"],
+    [10, 3, 4, "red"],
   ]
 )(
   "edgeColorTest: step=%i, from=%i, to=%i, color=%s", (step, from, to, color) => {
