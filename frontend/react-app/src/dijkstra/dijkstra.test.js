@@ -1,36 +1,43 @@
 import { getInitialGraph, calcSteps, calcColoredGraph } from "./dijkstra.js"
 
-test('getInitialGraphTest', () => {
-      const targetResponse = getTargetResponse()
-      const initialGraph = getInitialGraph(targetResponse)
-      expect(initialGraph.nodes.length).toBe(5)
-      expect(initialGraph.edges.length).toBe(10)
-      const expectList = [
-        [0, 1, "5"],
-        [1, 2, "1"],
-        [1, 4, "10"],
-        [3, 4, "5"]
-      ]
-      expectList.forEach(target => {
-        const from = target[0]
-        const to = target[1]
-        const label = target[2]
-        expect(initialGraph.edges.find(
-          link => link.from === from && link.to === to )["label"]).toBe(label)
-        }
-      )
-    }
-);
+let targetResponse
+let initialGraph
+let steps
+
+beforeEach(() => {
+  targetResponse = getTargetResponse()
+  initialGraph = getInitialGraph(targetResponse)
+  steps = calcSteps(targetResponse, initialGraph)
+})
 
 test(
-  "calcStepsTest", () => {
-    const targetResponse = getTargetResponse()
-    const initialGraph = getInitialGraph(targetResponse)
-    const steps = calcSteps(targetResponse, initialGraph)
+  "getInitialGraphTest: checkGraphSize", () => {
+    expect(initialGraph.nodes.length).toBe(5)
+    expect(initialGraph.edges.length).toBe(10)
+  }
+)
+
+test.each(
+  [
+    [0, 1, "5"],
+    [1, 2, "1"],
+    [1, 4, "10"],
+    [3, 4, "5"]
+  ]
+  )("getInitialGraphTest: from=%i, to=%i, label=%s", (from, to, label) => {
+    expect(initialGraph.edges.find(
+      link => link.from === from && link.to === to )["label"]).toBe(label)
+  }
+)
+
+test(
+  "calcStepsTest: checkSize", () => {
     const graphs = steps.map(step => step.graph)
     const tables = steps.map(step => step.table)
+    expect(graphs.length).toBe(11)
+    expect(tables.length).toBe(11)
   }
-);
+)
 
 test(
   "calcColoredGraphTest", () => {
