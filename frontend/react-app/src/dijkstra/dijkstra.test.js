@@ -1,14 +1,45 @@
-// import { Rewire } from 'rewire'
-// var dijkstra = Rewire("./dijkstra.js")
-// var getInitialGraph = dijkstra.__get__("getInitialGraph")
-test(
-    "getInitialTest", () => {
-        expect(1 + 2).toBe(3);
+import { getInitialGraph, calcSteps, calcColoredGraph } from "./dijkstra.js"
+
+test('getInitialGraphTest', () => {
+      const targetResponse = getTargetResponse()
+      const initialGraph = getInitialGraph(targetResponse)
+      expect(initialGraph.nodes.length).toBe(5)
+      expect(initialGraph.edges.length).toBe(10)
+      const expectList = [
+        [0, 1, "5"],
+        [1, 2, "1"],
+        [1, 4, "10"],
+        [3, 4, "5"]
+      ]
+      expectList.forEach(target => {
+        const from = target[0]
+        const to = target[1]
+        const label = target[2]
+        expect(initialGraph.edges.find(
+          link => link.from === from && link.to === to )["label"]).toBe(label)
+        }
+      )
     }
 );
 
+test(
+  "calcStepsTest", () => {
+    const targetResponse = getTargetResponse()
+    const initialGraph = getInitialGraph(targetResponse)
+    const steps = calcSteps(targetResponse, initialGraph)
+    const graphs = steps.map(step => step.graph)
+    const tables = steps.map(step => step.table)
+  }
+);
+
+test(
+  "calcColoredGraphTest", () => {
+
+  }
+);
+
 const getTargetResponse = () => {
-    return {
+    return { "data" : {
         "status": "OK",
         "search_info": {
           "graph_size": 5,
@@ -101,5 +132,6 @@ const getTargetResponse = () => {
             }
           ]
         }
-      };
+      }
+    };
 }
