@@ -1,49 +1,140 @@
+import { range } from "ramda"
 import { getInitialGraph, calcSteps, calcColoredGraph } from "./dijkstra.js"
 
-let targetResponse
-let initialGraph
-let steps
+let coloredGraph
+let tables
+const stepNum = 11
+const nodeNum = 5
+const edgeNum = 10
 
 beforeEach(() => {
-  targetResponse = getTargetResponse()
-  initialGraph = getInitialGraph(targetResponse)
-  steps = calcSteps(targetResponse, initialGraph)
+  const response = getTargetResponse()
+  const initialGraph = getInitialGraph(response)
+  const steps = calcSteps(response, initialGraph)
+  const graphs = steps.map(step => step.graph)
+  tables = steps.map(step => step.table)
+  const startNode = response.data.search_info.start_node
+  const goalNode = response.data.search_info.goal_node
+  const shortestPath = response.data.search_info.shortest_path
+  coloredGraph = calcColoredGraph(initialGraph, graphs, startNode, goalNode, shortestPath)
 })
 
 test(
-  "getInitialGraphTest: checkGraphSize", () => {
-    expect(initialGraph.nodes.length).toBe(5)
-    expect(initialGraph.edges.length).toBe(10)
-  }
-)
-
-test.each(
-  [
-    [0, 1, "5"],
-    [1, 2, "1"],
-    [1, 4, "10"],
-    [3, 4, "5"]
-  ]
-  )("getInitialGraphTest: from=%i, to=%i, label=%s", (from, to, label) => {
-    expect(initialGraph.edges.find(
-      link => link.from === from && link.to === to )["label"]).toBe(label)
+  "graphSizeTest", () => {
+    expect(coloredGraph.length).toBe(stepNum)
+    coloredGraph.forEach(graph => {
+      const nodes = graph.nodes
+      const edges = graph.edges
+      expect(nodes.length).toBe(nodeNum)
+      expect(edges.length).toBe(edgeNum)
+    });
   }
 )
 
 test(
-  "calcStepsTest: checkSize", () => {
-    const graphs = steps.map(step => step.graph)
-    const tables = steps.map(step => step.table)
-    expect(graphs.length).toBe(11)
-    expect(tables.length).toBe(11)
+  "tableSizeTest", () => {
+    expect(tables.length).toBe(stepNum)
+    // すべてのステップについて、表の中にすべてのノードが存在することを確認
+    tables.forEach( table => {
+      range(0, nodeNum).forEach( nodeId => {
+        expect(table.find( row => row.id === nodeId)).not.toBe(undefined)
+      })
+    })
   }
 )
 
-test(
-  "calcColoredGraphTest", () => {
+// test.each(
+//   [
+//     [0, 1, "5"],
+//     [1, 2, "1"],
+//     [1, 4, "10"],
+//     [3, 4, "5"]
+//   ]
+//   )("getInitialGraphTest: checkLabel: from=%i, to=%i, label=%s", (from, to, label) => {
+//     expect(initialGraph.edges.find(
+//       link => link.from === from && link.to === to )["label"]).toBe(label)
+//   }
+// )
 
-  }
-);
+// test(
+//   "calcStepsTest: checkSize", () => {
+//     const graphs = steps.map(step => step.graph)
+//     const tables = steps.map(step => step.table)
+//     expect(graphs.length).toBe(11)
+//     expect(tables.length).toBe(11)
+//   }
+// )
+
+// test.each(
+//   [
+//     [1, 0, "yellow", true, -1, -1],
+//   ]
+// )
+
+// test.each(
+//   [
+//     [1, 0, "yellow"],
+//     [2, 1, "lightgreen"],
+//     [2, 2, "lightgreen"],
+//     [3, 1, "yellow"],
+//     [4, 2, "lightgreen"],
+//     [4, 3, "lightgreen"],
+//     [4, 4, "lightgreen"],
+//     [7, 3, "yellow"],
+//     [8, 1, "lightgreen"],
+//     [8, 4, "lightgreen"]
+//   ]
+// )(
+//   "calcStepTest: checkNodeColor: step=%i, node=%i, color=%s", (stepIndex, nodeIndex, color) => {
+//     const graphs = steps.map(step => step.graph)
+//     const graph = graphs[stepIndex]
+//     const targetNode = graph.nodes.find(node => node.id === nodeIndex)
+//     expect(targetNode.color).toBe(color)
+//   }
+// )
+
+// test.each(
+//   [
+//     [0, 0, false, -1, -1],
+//     [0, 1, false, -1, -1],
+//     [0, 2, false, -1, -1],
+//     [0, 3, false, -1, -1],
+//     [0, 4, false, -1, -1],
+//     [1, 0, true, -1, -1],
+//     [1, 1, false, -1, -1],
+//     [1, 2, false, -1, -1],
+//     [1, 3, false, -1, -1],
+//     [1, 4, false, -1, -1],
+//     [2, 0, true, 0, -1],
+//     [2, 1, false, 5, 0],
+//     [2, 2, false, 8, 0],
+//     [2, 3, false, -1, -1],
+//     [2, 4, false, -1, -1],
+//     [3, 0, true, 0, -1],
+//     [3, 1, true, 5, 0],
+//     [3, 2, false, 8, 0],
+//     [3, 3, false, -1, -1],
+//     [3, 4, false, -1, -1],
+//     [4, 0, true, 0, -1],
+//     [4, 1, true, 5, 0],
+//     [4, 2, false, 6, 1],
+//     [4, 3, false, 8, 1],
+//     [4, 4, false, 15, 1],
+//   ]
+// )(
+//   "calcStepTest: checkTable: step=%i, node=%i, fixed=%i, prevNode=%i", (step, nodeIndex, fixed, prevNode) => {
+//     const table = steps.map(step => step.table)[step]
+//     const targetNode = table.find(node => node.id === nodeIndex)
+//     expect(targetNode.fixed).toBe(fixed)
+//     expect(targetNode.prevNode).toBe(prevNode)
+//   }
+// )
+
+// test(
+//   "calcColoredGraphTest", () => {
+
+//   }
+// );
 
 const getTargetResponse = () => {
     return { "data" : {
