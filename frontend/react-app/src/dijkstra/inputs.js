@@ -12,8 +12,14 @@ export const dijkstraInputs = [
     type: 'number'
   },
   {
+    key: 'nodeNum',
+    value: '5',
+    label: 'ノード数',
+    type: 'number'
+  },
+  {
     key: 'costMatrix',
-    value: '5 -1 5 8 -1 -1 -1 -1 1 3 10 3 -1 -1 1 7 -1 4 -1 -1 5 -1 -1 -1 -1 -1',
+    value: '-1 5 8 -1 -1 -1 -1 1 3 10 3 -1 -1 1 7 -1 4 -1 -1 5 -1 -1 -1 -1 -1',
     label: 'コスト行列',
     type: 'string'
   }
