@@ -21,7 +21,16 @@ export const createRequestBody = (arr) => {
   const obj = result.reduce((acc, cur) => {
     return assoc(cur.key, cur.value, acc)
   }, {})
+  
+  // 入力フィールドの値を結合
+  const fixedObj = ((obj) => {
+    return {
+      'startNode': obj.startNode,
+      'goalNode': obj.goalNode,
+      'costMatrix': obj.nodeNum + " " + obj.costMatrix
+    }
+  })(obj)
 
   // スネークケースに変換
-  return toSnakeCaseObject(obj)
+  return toSnakeCaseObject(fixedObj)
 }
