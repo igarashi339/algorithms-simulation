@@ -15,16 +15,23 @@ export const dijkstraParser = (response, setControl, setResult) => {
   }
 
   const initialGraph = getInitialGraph(response)
-  const coloredGraph = makeColoredGraphs(response, initialGraph)
+  const nodeColoredGraphs = makeNodeColoredGraphs(response, initialGraph)
+  const coloredGraphs = paintEdges(response, nodeColoredGraphs)
 
   // 各ステップのグラフと表を作成
   const steps = calcSteps(response, initialGraph)
   const tables = steps.map(step => step.table);
 
-  setResult({ graphs: coloredGraph, tables, currentStep: 0 })
+  setResult({ graphs: coloredGraphs, tables, currentStep: 0 })
   setControl(2)
 }
 
+/**
+ * レスポンスから初期グラフを生成する。
+ * 
+ * @param {*} response レスポンスオブジェクト
+ * @returns グラフオブジェクトの初期値
+ */
 export const getInitialGraph= (response) => {
   const graphSize = response.data.search_info.graph_size;
   const costMatrix = response.data.search_info.cost_matrix;
@@ -43,7 +50,10 @@ export const getInitialGraph= (response) => {
         from: index,
         to: cIndex,
         label: String(cost),
-        arrows: 'to'
+        arrows: 'to',
+        color: {
+          color: undefined
+        }
       })
     })
     return acc;
@@ -53,10 +63,14 @@ export const getInitialGraph= (response) => {
     edges: edges
   };
 }
-
-// ベースになるgraphsを作成 -> ndoeを着色 -> edgeを着色
-// という流れにしたほうが見通しがよい
-export const makeColoredGraphs = (response, graph)  => {
+/**
+ * ノードのみ彩色されたグラフのリストを構築する。
+ * 
+ * @param {*} response レスポンスオブジェクト
+ * @param {*} graph グラフオブジェクトの初期値
+ * @returns ノードのみ彩色されたグラフオブジェクトのリスト
+ */
+export const makeNodeColoredGraphs = (response, graph)  => {
   const minCostNodeColor = 'yellow'
   const labelUpdateNodeColor = 'lightgreen'
   const shortestPathColor = 'salmon'
@@ -103,6 +117,33 @@ export const makeColoredGraphs = (response, graph)  => {
   return slicedGraphs
 }
 
+/**
+ * グラフリストを受け取りエッジを彩色する。
+ * 
+ * @param {*} response レスポンスオブジェクト
+ * @param {*} graphs グラフオブジェクトのリスト
+ * @returns エッジの彩色されたグラフのリスト
+ */
+export const paintEdges = (response, graphs) => {
+  const shortestPathEdgeColor = 'red'
+
+  const updateGraph = (from, to, color) => (graph) => {
+    const targetEdgeIndex = graph.edges.findIndex(edge => edge.from === from && edge.to === to)
+    const updatedEdge = assoc('color', {'color': color}, graph.edges[targetEdgeIndex])
+    const updatedEdges = update(targetEdgeIndex, updatedEdge, graph.edges)
+    return assoc('edges', updatedEdges, graph)
+  }
+
+  // 最短経路を彩色
+  const shortestPath = response.data.search_info.shortest_path
+  const shortestPathUpdatedGraph = aperture(2, shortestPath).reduce((acc, cur) => {
+    const prevNode = cur[0]
+    const nextNode = cur[1]
+    return updateGraph(prevNode, nextNode, shortestPathEdgeColor)(acc)
+  }, graphs.slice(-1)[0])
+  return update(-1, shortestPathUpdatedGraph, graphs)
+}
+
 export const calcSteps = (response, graph) => {
   // 初期テーブル作成
   const graphSize = response.data.search_info.graph_size;
@@ -143,31 +184,6 @@ export const calcSteps = (response, graph) => {
 
     return acc;
   }, [{ graph: graph, table: initialTable }])
-}
-
-export const calcColoredGraph = (initialGraph, graphs, startNode, goalNode, shortestPath) => {
-  const colordedEdges = initialGraph.edges.map(edge => {
-    if (aperture(2, shortestPath).some(([from, to]) => (edge.from === from && edge.to === to))) {
-      return assoc('color', { color: 'red' }, edge)
-    }
-    else {
-      return pipe(assoc('color', { opacity: '0.3' }), assoc('font', {color: 'lightgray'}))(edge)
-    }
-  })
-
-  const coloredNodes = pipe(
-    update(startNode, assoc('color', 'red', initialGraph.nodes[startNode])),
-    update(goalNode, assoc('color', 'red', initialGraph.nodes[goalNode]))
-  )(initialGraph.nodes.map(node => shortestPath.includes(node.id) ? assoc('color', 'salmon', node) : node));
-  
-  return update(
-    graphs.length - 1,
-    pipe(
-      assoc('edges', colordedEdges),
-      assoc('nodes', coloredNodes)
-    )(graphs.slice(-1)[0]),
-    graphs
-  );
 }
 
 export const drawDijkstraGraph = (id, graphs, currentStep) => {

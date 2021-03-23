@@ -1,7 +1,7 @@
 import { range } from "ramda"
-import { getInitialGraph, calcSteps, calcColoredGraph, makeColoredGraphs } from "./dijkstra.js"
+import { getInitialGraph, calcSteps, makeNodeColoredGraphs, paintEdges } from "./dijkstra.js"
 
-let coloredGraph
+let coloredGraphs
 let tables
 const stepNum = 11
 const nodeNum = 5
@@ -11,15 +11,15 @@ beforeEach(() => {
   const response = getTargetResponse()
   const initialGraph = getInitialGraph(response)
   const steps = calcSteps(response, initialGraph)
-  const graphs = steps.map(step => step.graph)
   tables = steps.map(step => step.table)
-  coloredGraph = makeColoredGraphs(response, initialGraph)
+  const nodeColoredGraphs = makeNodeColoredGraphs(response, initialGraph)
+  coloredGraphs = paintEdges(response, nodeColoredGraphs)
 })
 
 test(
   "graphSizeTest", () => {
-    expect(coloredGraph.length).toBe(stepNum)
-    coloredGraph.forEach(graph => {
+    expect(coloredGraphs.length).toBe(stepNum)
+    coloredGraphs.forEach(graph => {
       const nodes = graph.nodes
       const edges = graph.edges
       expect(nodes.length).toBe(nodeNum)
@@ -55,7 +55,7 @@ test.each(
   ]
 ) (
   "edgeCostTest: from=%i, to=%i, cost=%s", (from, to, cost) => {
-    coloredGraph.forEach( graph => {
+    coloredGraphs.forEach( graph => {
       const targetEdge = graph.edges.find(edge => edge.from === from && edge.to === to)
       expect(targetEdge.label).toBe(cost)
     })
@@ -87,28 +87,27 @@ test.each(
   ]
 )(
   "nodeColorTest: step=%i, node=%i, color=%s", (step, nodeId, color) => {
-    const targetGraph = coloredGraph[step]
+    const targetGraph = coloredGraphs[step]
     const targetNode = targetGraph.nodes.find(node => node.id === nodeId)
     expect(targetNode.color).toBe(color)
   }
 )
 
-// test.each(
-//   [
-//     // todo: colorが定義されているedgeとされていないedgeが存在するため修正
-//     [10, 0, 1, "red"],
-//     [10, 1, 2, "red"],
-//     [10, 2, 3, "red"],
-//     [10, 3, 4, "red"],
-//   ]
-// )(
-//   "edgeColorTest: step=%i, from=%i, to=%i, color=%s", (step, from, to, color) => {
-//     const targetGraph = coloredGraph[step]
-//     const targetEdge = targetGraph.edges.find(edge => edge.from === from && edge.to === to)
-//     // todo: colorが不必要に入れ子になっているため修正
-//     expect(targetEdge.color.color).toBe(color)
-//   }
-// )
+test.each(
+  [
+    // todo: colorが定義されているedgeとされていないedgeが存在するため修正
+    [10, 0, 1, "red"],
+    [10, 1, 2, "red"],
+    [10, 2, 3, "red"],
+    [10, 3, 4, "red"],
+  ]
+)(
+  "edgeColorTest: step=%i, from=%i, to=%i, color=%s", (step, from, to, color) => {
+    const targetGraph = coloredGraphs[step]
+    const targetEdge = targetGraph.edges.find(edge => edge.from === from && edge.to === to)
+    expect(targetEdge.color.color).toBe(color)
+  }
+)
 
 test.each(
   [
