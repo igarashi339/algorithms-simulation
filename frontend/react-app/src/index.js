@@ -4,8 +4,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Dashboard } from './Dashboard'
 import { NotFound } from './NotFound'
-import { Dijkstra } from './dijkstra/Dijkstra';
-import { Home } from './Home';
+import { routes } from './routes'
 
 const theme = createMuiTheme({
   typography: {
@@ -20,9 +19,9 @@ const useStyles = makeStyles(() => ({
     height: '100vh'
   },
   dashboard: {
-    flexBasis: '220px',
+    flexBasis: '240px',
     height: '100%',
-    minWidth: '220px'
+    minWidth: '240px'
   },
   content: {
     flexGrow: '1',
@@ -35,7 +34,7 @@ const useStyles = makeStyles(() => ({
 
 const App = () => {
   const classes = useStyles();
-  
+
   return (
     <Router>
       <Box className={classes.root}>
@@ -45,12 +44,11 @@ const App = () => {
         <Divider orientation="vertical" />
         <Box className={classes.content}>
           <Switch>
-            <Route exact path='/'>
-              <Home />
-            </Route>
-            <Route exact path='/dijkstra'>
-              <Dijkstra />
-            </Route>
+            {routes.map((route, index) => (
+              <Route exact key={index} path={route.path}>
+                {route.component}
+              </Route>
+            ))}
             <Route>
               <NotFound />
             </Route>
