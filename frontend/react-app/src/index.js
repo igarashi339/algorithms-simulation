@@ -1,4 +1,4 @@
-import { Box, createMuiTheme, Divider, makeStyles, ThemeProvider } from '@material-ui/core';
+import { Box, createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -13,22 +13,27 @@ const theme = createMuiTheme({
 })
 
 const useStyles = makeStyles(() => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'row',
-    height: '100vh'
-  },
   dashboard: {
-    flexBasis: '240px',
+    position: 'fixed',
+    width: '240px',
     height: '100%',
-    minWidth: '240px'
+    overflow: 'auto',
+    borderRight: '1px solid lightgray'
+  },
+  wrap: {
+    position: 'relative',
+    left: '240px',
+    width: 'calc(100% - 240px)',
+    height: 'calc(100% - 80px)',
+    overflow: 'auto'
   },
   content: {
-    flexGrow: '1',
+    position: 'relative',
+    margin: 'auto',
     width: 'calc(100% - 80px)',
-    height: 'calc(100% - 80px)',
+    height: '100%',
+    maxWidth: '1000px',
     padding: '40px',
-    overflow: 'auto'
   }
 }))
 
@@ -37,11 +42,10 @@ const App = () => {
 
   return (
     <Router>
-      <Box className={classes.root}>
-        <Box className={classes.dashboard}>
-          <Dashboard />
-        </Box>
-        <Divider orientation="vertical" />
+      <Box className={classes.dashboard}>
+        <Dashboard />
+      </Box>
+      <Box className={classes.wrap}>
         <Box className={classes.content}>
           <Switch>
             {routes.map((route, index) => (
