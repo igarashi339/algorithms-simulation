@@ -1,10 +1,11 @@
-import { Box, createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core';
+import { Box, Card, createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Dashboard } from './Dashboard'
 import { NotFound } from './NotFound'
 import { routes } from './routes'
+import { grey } from '@material-ui/core/colors';
 
 const theme = createMuiTheme({
   typography: {
@@ -15,23 +16,23 @@ const theme = createMuiTheme({
 const useStyles = makeStyles(() => ({
   dashboard: {
     position: 'fixed',
-    width: '240px',
+    width: '280px',
     height: '100%',
     overflow: 'auto',
     borderRight: '1px solid lightgray'
   },
   wrap: {
-    position: 'relative',
-    left: '240px',
-    width: 'calc(100% - 240px)',
-    height: 'calc(100% - 80px)',
-    overflow: 'auto'
+    position: 'absolute',
+    left: '280px',
+    width: 'calc(100% - 280px)',
+    height: '100%',
+    overflowY: 'scroll',
+    backgroundColor: grey[50]
   },
   content: {
-    position: 'relative',
-    margin: 'auto',
+    margin: '40px auto',
     width: 'calc(100% - 80px)',
-    height: '100%',
+    minHeight: 'calc(100% - 160px)',
     maxWidth: '1000px',
     padding: '40px',
   }
@@ -46,7 +47,7 @@ const App = () => {
         <Dashboard />
       </Box>
       <Box className={classes.wrap}>
-        <Box className={classes.content}>
+        <Card className={classes.content}>
           <Switch>
             {routes.map((route, index) => (
               <Route exact key={index} path={route.path}>
@@ -57,7 +58,7 @@ const App = () => {
               <NotFound />
             </Route>
           </Switch>
-        </Box>
+        </Card>
       </Box>
     </Router>
   )
