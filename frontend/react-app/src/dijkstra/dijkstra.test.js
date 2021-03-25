@@ -1,5 +1,5 @@
 import { range } from "ramda"
-import { getInitialGraph, calcSteps, makeNodeColoredGraphs, paintEdges } from "./dijkstra.js"
+import { makeGraphs, makeTables } from "./dijkstra.js"
 
 let coloredGraphs
 let tables
@@ -9,11 +9,8 @@ const edgeNum = 10
 
 beforeEach(() => {
   const response = getTargetResponse()
-  const initialGraph = getInitialGraph(response)
-  const steps = calcSteps(response, initialGraph)
-  tables = steps.map(step => step.table)
-  const nodeColoredGraphs = makeNodeColoredGraphs(response, initialGraph)
-  coloredGraphs = paintEdges(response, nodeColoredGraphs)
+  tables = makeTables(response)
+  coloredGraphs = makeGraphs(response)
 })
 
 test(

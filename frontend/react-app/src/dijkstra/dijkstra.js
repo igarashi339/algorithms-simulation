@@ -14,15 +14,10 @@ export const dijkstraParser = (response, setControl, setResult) => {
     return;
   }
 
-  const initialGraph = getInitialGraph(response)
-  const nodeColoredGraphs = makeNodeColoredGraphs(response, initialGraph)
-  const coloredGraphs = paintEdges(response, nodeColoredGraphs)
+  const graphs = makeGraphs(response)
+  const tables = makeTables(response)
 
-  // 各ステップのグラフと表を作成
-  const steps = calcSteps(response, initialGraph)
-  const tables = steps.map(step => step.table);
-
-  setResult({ graphs: coloredGraphs, tables, currentStep: 0 })
+  setResult({ graphs: graphs, tables, currentStep: 0 })
   setControl(2)
 }
 
@@ -32,7 +27,7 @@ export const dijkstraParser = (response, setControl, setResult) => {
  * @param {*} response レスポンスオブジェクト
  * @returns グラフオブジェクトの初期値
  */
-export const getInitialGraph= (response) => {
+const getInitialGraph= (response) => {
   const graphSize = response.data.search_info.graph_size;
   const costMatrix = response.data.search_info.cost_matrix;
   const parsedMatrix = splitEvery(graphSize, costMatrix);
@@ -70,7 +65,7 @@ export const getInitialGraph= (response) => {
  * @param {*} graph グラフオブジェクトの初期値
  * @returns ノードのみ彩色されたグラフオブジェクトのリスト
  */
-export const makeNodeColoredGraphs = (response, graph)  => {
+const makeNodeColoredGraphs = (response, graph)  => {
   const minCostNodeColor = 'yellow'
   const labelUpdateNodeColor = 'lightgreen'
   const shortestPathColor = 'salmon'
@@ -124,7 +119,7 @@ export const makeNodeColoredGraphs = (response, graph)  => {
  * @param {*} graphs グラフオブジェクトのリスト
  * @returns エッジの彩色されたグラフのリスト
  */
-export const paintEdges = (response, graphs) => {
+const paintEdges = (response, graphs) => {
   const shortestPathEdgeColor = 'red'
 
   const updateGraph = (from, to, color) => (graph) => {
@@ -144,46 +139,50 @@ export const paintEdges = (response, graphs) => {
   return update(-1, shortestPathUpdatedGraph, graphs)
 }
 
-export const calcSteps = (response, graph) => {
-  // 初期テーブル作成
-  const graphSize = response.data.search_info.graph_size;
-  const initialTable = range(0, graphSize).map(index => ({
-    id: index,
-    fixed: false,
-    label: -1,
-    prevNode: -1
-  }));
+export const makeGraphs = (response) => {
+  const initialGraph = getInitialGraph(response)
+  const nodeColoredGraphs = makeNodeColoredGraphs(response, initialGraph)
+  return paintEdges(response, nodeColoredGraphs)
+}
 
-  return response.data.search_info.steps.reduce((acc, cur) => {
-    // コスト最小のノードを更新
-    const minCostNode = cur.min_cost_node;
-    const last = acc.slice(-1)[0];
-    const lastTable = last.table;
-    const costUpdatedTable = update(
-      minCostNode,
-      assoc('fixed', true, lastTable[minCostNode]),
-      lastTable
-    );
-    const costUpdatedGraph = assoc('nodes', 
-                                   update(minCostNode, assoc('color', 'yellow', graph.nodes[minCostNode]), graph.nodes), graph);
-    acc.push({ graph: costUpdatedGraph, table: costUpdatedTable });
+/**
+ * テーブルリストを作成する。
+ * 
+ * @param {*} response レスポンスオブジェクト
+ * @returns テーブルオブジェクトのリスト
+ */
+export const makeTables = (response) => {
+    // 初期テーブル作成
+    const graphSize = response.data.search_info.graph_size
 
-    // ラベルとひとつ前のノードを更新
-    const labelUpdatedTable = costUpdatedTable.map((row, index) => {
-      return pipe(
-        assoc('label', cur.updated_labels[index]),
-        assoc('prevNode', cur.updated_prev_node[index])
-      )(row)
-    })
+    const initialTable = range(0, graphSize).map(index => ({
+      id: index,
+      fixed: false,
+      label: -1,
+      prevNode: -1
+    }));
+    const steps = response.data.search_info.steps
+    return steps.reduce((acc, cur) => {
+      // コスト最小のノードを更新
+      const minCostNode = cur.min_cost_node;
+      const lastTable = acc.slice(-1)[0]
+      const costUpdatedTable = update(
+        minCostNode,
+        assoc('fixed', true, lastTable[minCostNode]),
+        lastTable
+      );
+      acc.push(costUpdatedTable)
 
-    // 隣接するノードを色付け
-    const labelUpdatedGraph = cur.adjacent_nodes.reduce((acc, cur) => {
-      return assoc('nodes', update(cur, assoc('color', 'lightgreen', acc.nodes[cur]), acc.nodes), acc)
-    }, graph)
-    acc.push({ graph: labelUpdatedGraph, table: labelUpdatedTable })
-
-    return acc;
-  }, [{ graph: graph, table: initialTable }])
+      // ラベルとひとつ前のノードを更新
+      const labelUpdatedTable = costUpdatedTable.map((row, index) => {
+        return pipe(
+          assoc('label', cur.updated_labels[index]),
+          assoc('prevNode', cur.updated_prev_node[index])
+        )(row)
+      })
+      acc.push(labelUpdatedTable)
+      return acc
+    }, [initialTable])
 }
 
 export const drawDijkstraGraph = (id, graphs, currentStep) => {
@@ -222,4 +221,3 @@ export const drawDijkstraGraph = (id, graphs, currentStep) => {
   };
   new vis.Network(container, data, options);
 }
-
