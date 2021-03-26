@@ -1,25 +1,24 @@
 import { Box, Typography, makeStyles } from '@material-ui/core'
 import { amber, grey } from '@material-ui/core/colors';
 import { Link, useLocation } from 'react-router-dom';
-
-const contents = [
-  {
-    name: 'ダイクストラ法',
-    path: '/dijkstra'
-  },
-  {
-    name: 'ダミー',
-    path: '/dummy'
-  },
-]
+import { categories } from './routes'
 
 const useStyles = makeStyles(() => ({
   title: {
     padding: '24px',
     backgroundColor: amber[200],
   },
+  categories: {
+    margin: '24px 0 0'
+  },
+  category: {
+    padding: '8px 24px'
+  },
+  algorithm: {
+    padding: '8px 24px 8px 48px',
+  },
   content: {
-    padding: '24px',
+    padding: '8px 24px 8px 72px',
     transition: '0.5s',
     '&:hover': {
       backgroundColor: grey[200],
@@ -41,14 +40,23 @@ export const Dashboard = () => {
       <Box className={classes.title}>
         <Link to="/"><Typography color="textSecondary">Algorithms Simulation</Typography></Link>
       </Box>
-      {contents.map((content, index) => (
-        <Link key={index} to={content.path}>
-          <Box className={classes.content}>
-            <Typography color={path === content.path ? 'secondary' : 'textSecondary'}>{content.name}</Typography>
-          </Box>
-        </Link>
-      )
-      )}
+      {categories.map((category, index) => (
+        <Box key={index} className={classes.categories}>
+          <Typography className={classes.category} color="textSecondary">{category.name}</Typography>
+          {category.algorithms.map((algorithm, index) => (
+            <Box key={index}>
+              <Typography className={classes.algorithm} color="textSecondary">{algorithm.name}</Typography>
+              {algorithm.contents.map((content, index) => (
+                <Link key={index} to={category.path + algorithm.path + content.path}>
+                  <Box className={classes.content}>
+                    <Typography color={path === category.path + algorithm.path + content.path ? 'secondary' : 'textSecondary'}>{content.name}</Typography>
+                  </Box>
+                </Link>
+              ))}
+            </Box>
+          ))}
+        </Box>
+      ))}
     </Box>
   )
 }

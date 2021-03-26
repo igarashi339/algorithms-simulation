@@ -1,11 +1,11 @@
-import { Box, createMuiTheme, Divider, makeStyles, ThemeProvider } from '@material-ui/core';
+import { Box, Card, createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Dashboard } from './Dashboard'
 import { NotFound } from './NotFound'
-import { Dijkstra } from './dijkstra/Dijkstra';
-import { Home } from './Home';
+import { routes } from './routes'
+import { grey } from '@material-ui/core/colors';
 
 const theme = createMuiTheme({
   typography: {
@@ -14,48 +14,51 @@ const theme = createMuiTheme({
 })
 
 const useStyles = makeStyles(() => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'row',
-    height: '100vh'
-  },
   dashboard: {
-    flexBasis: '220px',
+    position: 'fixed',
+    width: '280px',
     height: '100%',
-    minWidth: '220px'
+    overflow: 'auto',
+    borderRight: '1px solid lightgray'
+  },
+  wrap: {
+    position: 'absolute',
+    left: '280px',
+    width: 'calc(100% - 280px)',
+    height: '100%',
+    overflowY: 'scroll',
+    backgroundColor: grey[50]
   },
   content: {
-    flexGrow: '1',
+    margin: '40px auto',
     width: 'calc(100% - 80px)',
-    height: 'calc(100% - 80px)',
+    minHeight: 'calc(100% - 160px)',
+    maxWidth: '1000px',
     padding: '40px',
-    overflow: 'auto'
   }
 }))
 
 const App = () => {
   const classes = useStyles();
-  
+
   return (
     <Router>
-      <Box className={classes.root}>
-        <Box className={classes.dashboard}>
-          <Dashboard />
-        </Box>
-        <Divider orientation="vertical" />
-        <Box className={classes.content}>
+      <Box className={classes.dashboard}>
+        <Dashboard />
+      </Box>
+      <Box className={classes.wrap}>
+        <Card className={classes.content}>
           <Switch>
-            <Route exact path='/'>
-              <Home />
-            </Route>
-            <Route exact path='/dijkstra'>
-              <Dijkstra />
-            </Route>
+            {routes.map((route, index) => (
+              <Route exact key={index} path={route.path}>
+                {route.component}
+              </Route>
+            ))}
             <Route>
               <NotFound />
             </Route>
           </Switch>
-        </Box>
+        </Card>
       </Box>
     </Router>
   )
