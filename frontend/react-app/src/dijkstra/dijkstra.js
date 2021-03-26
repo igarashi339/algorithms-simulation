@@ -33,8 +33,7 @@ const getInitialGraph= (response) => {
   const parsedMatrix = splitEvery(graphSize, costMatrix);
   const nodes = range(0, graphSize).map(index => ({
     id: index,
-    label: String(index),
-    color: undefined
+    label: String(index)
   }));
   const edges = parsedMatrix.reduce((acc, cur, index) => {
     cur.forEach((cost, cIndex) => {
@@ -45,10 +44,7 @@ const getInitialGraph= (response) => {
         from: index,
         to: cIndex,
         label: String(cost),
-        arrows: 'to',
-        color: {
-          color: undefined
-        }
+        arrows: 'to'
       })
     })
     return acc;
