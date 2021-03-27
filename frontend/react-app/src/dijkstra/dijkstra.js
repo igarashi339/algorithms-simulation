@@ -75,6 +75,7 @@ const makeNodeColoredGraphs = (response, graph)  => {
   const shortestPathColor = 'salmon'
   const startNodeColor = 'red'
   const goalNodeColor = 'red'
+  const costFixedNodeColor = 'gray'
 
   const updateGraph = (nodeId, color) => (graph) => {
     const updatedNode = assoc('color', {background: color} , graph.nodes[nodeId])
@@ -84,13 +85,22 @@ const makeNodeColoredGraphs = (response, graph)  => {
 
   const steps = response.data.search_info.steps;
   const coloredGraphs = steps.reduce((acc, cur) => {
+    // コスト確定済ノードの色を更新
+    const costFixedNodeColoredGraph = cur.cost_fixed_nodes.reduce((acc, cur) => {
+      return updateGraph(cur, costFixedNodeColor)(acc)
+    }, graph)
     // コスト最小ノードの色を更新
-    const mincostNodeColoredGraph = updateGraph(cur.min_cost_node, minCostNodeColor)(graph)
+    const mincostNodeColoredGraph = updateGraph(cur.min_cost_node, minCostNodeColor)(costFixedNodeColoredGraph)
     acc.push(mincostNodeColoredGraph)
+
+    // コスト確定済ノードの色を更新
+    const costFixedNodeColoredGraph2 = cur.cost_fixed_nodes.reduce((acc, cur) => {
+      return updateGraph(cur, costFixedNodeColor)(acc)
+    }, graph)
     // ラベル更新対象ノードの色を更新
     const labelUpdateNodeColoredGraph = cur.adjacent_nodes.reduce((acc, cur) => {
       return updateGraph(cur, labelUpdateNodeColor)(acc)
-    }, graph)
+    }, costFixedNodeColoredGraph2)
     acc.push(labelUpdateNodeColoredGraph)
     return acc
   }, [graph])
