@@ -1,24 +1,31 @@
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableHead, TableRow, makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles(() => ({
+  cell: {
+    textAlign: 'center'
+  }
+}))
 
 export const DijkstraTable = ({ steps }) => {
+  const classes = useStyles()
 
   return (
     <Table>
       <TableHead>
         <TableRow>
-          <TableCell>ノード番号</TableCell>
-          <TableCell>コスト確定</TableCell>
-          <TableCell>ラベル</TableCell>
-          <TableCell>ひとつ前のノード</TableCell>
+          <TableCell>Node ID</TableCell>
+          <TableCell>Cost Fixed</TableCell>
+          <TableCell>Label</TableCell>
+          <TableCell>Prev Node</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {steps.map((row, index) => (
           <TableRow key={index}>
-            <TableCell>{row.id}</TableCell>
-            <TableCell>{row.fixed ? 'TRUE' : 'FALSE'}</TableCell>
-            <TableCell>{row.label}</TableCell>
-            <TableCell>{row.prevNode}</TableCell>
+            <TableCell className={classes.cell}>{row.id}</TableCell>
+            <TableCell className={classes.cell}>{row.fixed ? 'TRUE' : 'FALSE'}</TableCell>
+            <TableCell className={classes.cell}>{row.label === -1 ? "∞" : row.label}</TableCell>
+            <TableCell className={classes.cell}>{row.prevNode === -1 ? "-" : row.prevNode}</TableCell>
           </TableRow>
         ))}
       </TableBody>
