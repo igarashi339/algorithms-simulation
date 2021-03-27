@@ -61,21 +61,21 @@ test.each(
 
 test.each(
   [
-    [0, 0, undefined],
-    [0, 1, undefined],
-    [0, 2, undefined],
-    [0, 3, undefined],
-    [0, 4, undefined],
+    [0, 0, "white"],
+    [0, 1, "white"],
+    [0, 2, "white"],
+    [0, 3, "white"],
+    [0, 4, "white"],
     [1, 0, "yellow"],
-    [1, 1, undefined],
-    [1, 2, undefined],
-    [1, 3, undefined],
-    [1, 4, undefined],
-    [2, 0, undefined],
+    [1, 1, "white"],
+    [1, 2, "white"],
+    [1, 3, "white"],
+    [1, 4, "white"],
+    [2, 0, "white"],
     [2, 1, "lightgreen"],
     [2, 2, "lightgreen"],
-    [2, 3, undefined],
-    [2, 4, undefined],
+    [2, 3, "white"],
+    [2, 4, "white"],
     [10, 0, "red"],
     [10, 1, "salmon"],
     [10, 2, "salmon"],
@@ -86,13 +86,14 @@ test.each(
   "nodeColorTest: step=%i, node=%i, color=%s", (step, nodeId, color) => {
     const targetGraph = coloredGraphs[step]
     const targetNode = targetGraph.nodes.find(node => node.id === nodeId)
-    expect(targetNode.color).toBe(color)
+    expect(targetNode.color.background).toBe(color)
   }
 )
 
 test.each(
   [
-    // todo: colorが定義されているedgeとされていないedgeが存在するため修正
+    [2, 0, 2, "lightgreen"],
+    [2, 0, 1, "lightgreen"],
     [10, 0, 1, "red"],
     [10, 1, 2, "red"],
     [10, 2, 3, "red"],
