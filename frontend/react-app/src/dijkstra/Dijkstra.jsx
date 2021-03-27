@@ -19,7 +19,8 @@ const useStyles = makeStyles(() => ({
     margin: '24px auto'
   },
   content: {
-    display: 'flex'
+    display: 'flex',
+    marginTop: '20px'
   },
   graph: {
     flexBasis: '50%',
