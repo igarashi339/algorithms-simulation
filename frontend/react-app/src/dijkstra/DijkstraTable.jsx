@@ -6,10 +6,10 @@ export const DijkstraTable = ({ steps }) => {
     <Table>
       <TableHead>
         <TableRow>
-          <TableCell>ノード番号</TableCell>
-          <TableCell>コスト確定</TableCell>
-          <TableCell>ラベル</TableCell>
-          <TableCell>ひとつ前のノード</TableCell>
+          <TableCell>Node ID</TableCell>
+          <TableCell>Cost Fixed</TableCell>
+          <TableCell>Label</TableCell>
+          <TableCell>Prev Node</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -17,8 +17,8 @@ export const DijkstraTable = ({ steps }) => {
           <TableRow key={index}>
             <TableCell>{row.id}</TableCell>
             <TableCell>{row.fixed ? 'TRUE' : 'FALSE'}</TableCell>
-            <TableCell>{row.label}</TableCell>
-            <TableCell>{row.prevNode}</TableCell>
+            <TableCell>{row.label === -1 ? "∞" : row.label}</TableCell>
+            <TableCell>{row.prevNode === -1 ? "-" : row.prevNode}</TableCell>
           </TableRow>
         ))}
       </TableBody>
