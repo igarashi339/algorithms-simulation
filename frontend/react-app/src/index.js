@@ -31,7 +31,7 @@ const useStyles = makeStyles(() => ({
   },
   content: {
     margin: '40px auto',
-    width: 'calc(100% - 80px)',
+    width: 'calc(100% - 250px)',
     minHeight: 'calc(100% - 160px)',
     maxWidth: '1000px',
     padding: '40px',
