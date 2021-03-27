@@ -1,6 +1,13 @@
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableHead, TableRow, makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles(() => ({
+  cell: {
+    textAlign: 'center'
+  }
+}))
 
 export const DijkstraTable = ({ steps }) => {
+  const classes = useStyles()
 
   return (
     <Table>
@@ -15,10 +22,10 @@ export const DijkstraTable = ({ steps }) => {
       <TableBody>
         {steps.map((row, index) => (
           <TableRow key={index}>
-            <TableCell>{row.id}</TableCell>
-            <TableCell>{row.fixed ? 'TRUE' : 'FALSE'}</TableCell>
-            <TableCell>{row.label === -1 ? "∞" : row.label}</TableCell>
-            <TableCell>{row.prevNode === -1 ? "-" : row.prevNode}</TableCell>
+            <TableCell className={classes.cell}>{row.id}</TableCell>
+            <TableCell className={classes.cell}>{row.fixed ? 'TRUE' : 'FALSE'}</TableCell>
+            <TableCell className={classes.cell}>{row.label === -1 ? "∞" : row.label}</TableCell>
+            <TableCell className={classes.cell}>{row.prevNode === -1 ? "-" : row.prevNode}</TableCell>
           </TableRow>
         ))}
       </TableBody>
