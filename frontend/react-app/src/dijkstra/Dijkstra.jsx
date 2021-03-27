@@ -1,4 +1,4 @@
-import { TextField, makeStyles, Box, Button, CircularProgress} from '@material-ui/core';
+import { TextField, makeStyles, Box, Button, CircularProgress } from '@material-ui/core';
 import { assoc, update } from 'ramda';
 import { useEffect, useState } from 'react';
 import { drawDijkstraGraph, dijkstraParser } from './dijkstra';
@@ -19,7 +19,6 @@ const useStyles = makeStyles(() => ({
     margin: '24px auto'
   },
   content: {
-    margin: '20px',
     display: 'flex'
   },
   graph: {
