@@ -13,10 +13,10 @@ export const DijkstraTable = ({ steps }) => {
     <Table>
       <TableHead>
         <TableRow>
-          <TableCell>Node ID</TableCell>
-          <TableCell>Cost Fixed</TableCell>
-          <TableCell>Label</TableCell>
-          <TableCell>Prev Node</TableCell>
+          <TableCell className={classes.cell>Node ID</TableCell>
+          <TableCell className={classes.cell>Cost Fixed</TableCell>
+          <TableCell className={classes.cell>Label</TableCell>
+          <TableCell className={classes.cell>Prev Node</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
