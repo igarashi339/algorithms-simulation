@@ -75,7 +75,7 @@ const makeNodeColoredGraphs = (response, graph)  => {
   const shortestPathColor = 'salmon'
   const startNodeColor = 'red'
   const goalNodeColor = 'red'
-  const costFixedNodeColor = 'gray'
+  const costFixedNodeColor = 'yellow'
 
   const updateGraph = (nodeId, color) => (graph) => {
     const updatedNode = assoc('color', {background: color} , graph.nodes[nodeId])
@@ -187,7 +187,7 @@ export const makeGraphs = (response) => {
  * @param {*} response レスポンスオブジェクト
  * @returns テーブルオブジェクトのリスト
  */
-export const makeTables = (response) => {
+const makeInitialTables = (response) => {
     // 初期テーブル作成
     const graphSize = response.data.search_info.graph_size
 
@@ -219,6 +219,58 @@ export const makeTables = (response) => {
       acc.push(labelUpdatedTable)
       return acc
     }, [initialTable])
+}
+
+const paintTables = (response, tables) => {
+  const minCostNodeColor = 'yellow'
+  const costFixedcNodeColor = 'yellow'
+  const costUpdateTargetNodeColor = 'lightgreen'
+
+  const updateTable = (nodeId, color) => (table) => {
+    const updatedRow = assoc('color', color, table[nodeId])
+    return update(nodeId, updatedRow, table)
+  }
+
+  let tablesIndex = 0
+  const steps = response.data.search_info.steps
+  return steps.reduce((acc, cur) => {
+    if (tablesIndex === 0) {
+      acc.push(tables[tablesIndex])
+      tablesIndex += 1
+    }
+
+    // コスト確定済ノードの表を彩色
+    const costFixedNodeColoredTable = cur.cost_fixed_nodes.reduce((acc, cur) => {
+      return updateTable(cur, costFixedcNodeColor)(acc)
+    }, tables[tablesIndex])
+
+    // コスト最小ノードの表を彩色
+    const minCostNodeIndex = cur.min_cost_node
+    const minCostUpdatedTable = updateTable(minCostNodeIndex, minCostNodeColor)(costFixedNodeColoredTable)
+    acc.push(minCostUpdatedTable)
+
+    tablesIndex += 1
+
+    // コスト確定済ノードの表を彩色
+    const costFixedNodeColoredGraph2 = cur.cost_fixed_nodes.reduce((acc, cur) => {
+      return updateTable(cur, costFixedcNodeColor)(acc)
+    }, tables[tablesIndex])
+
+    // ラベル更新対象ノードの表を彩色
+    const labelUpdateTargetColoredTable = cur.adjacent_nodes.reduce((acc, cur) => {
+      return updateTable(cur, costUpdateTargetNodeColor)(acc)
+    }, costFixedNodeColoredGraph2)
+    acc.push(labelUpdateTargetColoredTable)
+
+    tablesIndex += 1
+
+    return acc
+  }, [])
+}
+
+export const makeTables = (response) => {
+  const initialTables = makeInitialTables(response)
+  return paintTables(response, initialTables)
 }
 
 export const drawDijkstraGraph = (id, graphs, currentStep) => {
