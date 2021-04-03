@@ -33,8 +33,16 @@ const getInitialGraph= (response) => {
   const parsedMatrix = splitEvery(graphSize, costMatrix);
   const nodes = range(0, graphSize).map(index => ({
     id: index,
-    label: String(index)
+    label: String(index),
+    fixed: {
+      x: true,
+      y: true
+    },
+    color: {
+      background: 'white',
+    }
   }));
+  
   const edges = parsedMatrix.reduce((acc, cur, index) => {
     cur.forEach((cost, cIndex) => {
       if (cost <= 0) {
@@ -69,7 +77,7 @@ const makeNodeColoredGraphs = (response, graph)  => {
   const goalNodeColor = 'red'
 
   const updateGraph = (nodeId, color) => (graph) => {
-    const updatedNode = assoc('color', color, graph.nodes[nodeId])
+    const updatedNode = assoc('color', {background: color} , graph.nodes[nodeId])
     const updatedNodes = update(nodeId, updatedNode, graph.nodes)
     return assoc('nodes', updatedNodes, graph)
   }
@@ -117,6 +125,7 @@ const makeNodeColoredGraphs = (response, graph)  => {
  */
 const paintEdges = (response, graphs) => {
   const shortestPathEdgeColor = 'red'
+  const labelUpdateTargetColor = 'lightgreen'
 
   const updateGraph = (from, to, color) => (graph) => {
     const targetEdgeIndex = graph.edges.findIndex(edge => edge.from === from && edge.to === to)
@@ -125,14 +134,35 @@ const paintEdges = (response, graphs) => {
     return assoc('edges', updatedEdges, graph)
   }
 
+  // ラベル更新対象ノードへの入りリンクを彩色
+  const steps = response.data.search_info.steps;
+  let graphsIndex = 0
+  const labelUpdateTargetColoredGraph = steps.reduce((acc, cur) => {
+    if (graphsIndex === 0) {
+      acc.push(graphs[graphsIndex])
+      graphsIndex += 1
+    }
+
+    acc.push(graphs[graphsIndex])
+    graphsIndex += 1
+
+    const targetNodeId = cur.min_cost_node
+    const edgeUpdateGraph = cur.adjacent_nodes.reduce((acc_, cur_) => {
+      return updateGraph(targetNodeId, cur_, labelUpdateTargetColor)(acc_)
+    }, graphs[graphsIndex])
+    graphsIndex += 1
+    acc.push(edgeUpdateGraph)
+    return acc
+  }, [])
+
   // 最短経路を彩色
   const shortestPath = response.data.search_info.shortest_path
   const shortestPathUpdatedGraph = aperture(2, shortestPath).reduce((acc, cur) => {
     const prevNode = cur[0]
     const nextNode = cur[1]
     return updateGraph(prevNode, nextNode, shortestPathEdgeColor)(acc)
-  }, graphs.slice(-1)[0])
-  return update(-1, shortestPathUpdatedGraph, graphs)
+  }, labelUpdateTargetColoredGraph.slice(-1)[0])
+  return update(-1, shortestPathUpdatedGraph, labelUpdateTargetColoredGraph)
 }
 
 export const makeGraphs = (response) => {
@@ -187,9 +217,6 @@ export const drawDijkstraGraph = (id, graphs, currentStep) => {
   const options = {
     edges: {
       chosen: false,
-      color: {
-        color: '#848484'
-      }
     },
     // todo: ここをうまいこといじると、リンクの重複を解消できそう
     // 要ドキュメントよみこみ https://visjs.github.io/vis-network/docs/network/
@@ -212,7 +239,12 @@ export const drawDijkstraGraph = (id, graphs, currentStep) => {
       randomSeed: 0
     },
     nodes: {
-      chosen: false
+      chosen: false,
+      shape: 'circle',
+      margin: {
+        left: 11,
+        top: 12,
+      }
     },
   };
   new vis.Network(container, data, options);
