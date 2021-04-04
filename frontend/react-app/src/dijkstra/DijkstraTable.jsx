@@ -21,7 +21,7 @@ export const DijkstraTable = ({ steps }) => {
       </TableHead>
       <TableBody>
         {steps.map((row, index) => (
-          <TableRow key={index}>
+          <TableRow key={index} bgcolor={row.color}>
             <TableCell className={classes.cell}>{row.id}</TableCell>
             <TableCell className={classes.cell}>{row.fixed ? 'TRUE' : 'FALSE'}</TableCell>
             <TableCell className={classes.cell}>{row.label === -1 ? "∞" : row.label}</TableCell>

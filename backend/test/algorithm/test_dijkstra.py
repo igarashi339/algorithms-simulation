@@ -42,14 +42,14 @@ class TestDijkstra(unittest.TestCase):
         ))
         steps.append(DijkstraOneStep(
             min_cost_node=2,
-            adjacent_nodes=[0, 3, 4],
+            adjacent_nodes=[3, 4],
             cost_fixed_nodes=[0, 1, 2],
             updated_labels=[0, 5, 6, 7, 13],
             updated_prev_node=[-1, 0, 1, 2, 2]
         ))
         steps.append(DijkstraOneStep(
             min_cost_node=3,
-            adjacent_nodes=[1, 4],
+            adjacent_nodes=[4],
             cost_fixed_nodes=[0, 1, 2, 3],
             updated_labels=[0, 5, 6, 7, 12],
             updated_prev_node=[-1, 0, 1, 2, 3]

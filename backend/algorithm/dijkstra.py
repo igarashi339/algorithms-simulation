@@ -35,16 +35,18 @@ class Dijkstra:
             cost_fixed_nodes.append(min_cost_node)
             # コストを確定したノードに隣接しているノードのコストを更新
             adjacent_nodes = self.get_all_adjacent_nodes(min_cost_node)
+            adjacent_cost_unfixed_nodes = []
             for dst_node in adjacent_nodes:
                 if dst_node in cost_fixed_nodes:
                     continue
+                adjacent_cost_unfixed_nodes.append(dst_node)
                 new_cost = node_label_list[min_cost_node] + self.graph.get_cost(min_cost_node, dst_node)
                 if node_label_list[dst_node] == Dijkstra.INVALID_LABEL or new_cost < node_label_list[dst_node]:
                     prev_node_dict[dst_node] = min_cost_node
                     node_label_list[dst_node] = new_cost
             # シミュレーションオブジェクトを更新
             dijkstra_one_step = DijkstraOneStep(min_cost_node=min_cost_node,
-                                                adjacent_nodes=adjacent_nodes,
+                                                adjacent_nodes=adjacent_cost_unfixed_nodes,
                                                 cost_fixed_nodes=cost_fixed_nodes,
                                                 updated_labels=node_label_list,
                                                 updated_prev_node=prev_node_dict)

@@ -71,7 +71,7 @@ test.each(
     [1, 2, "white"],
     [1, 3, "white"],
     [1, 4, "white"],
-    [2, 0, "white"],
+    [2, 0, "yellow"],
     [2, 1, "lightgreen"],
     [2, 2, "lightgreen"],
     [2, 3, "white"],
@@ -142,6 +142,28 @@ test.each(
     expect(targetRow.fixed).toBe(fixed)
     expect(targetRow.label).toBe(label)
     expect(targetRow.prevNode).toBe(prevNode)
+  }
+)
+
+test.each(
+  [
+    [1, 0, "yellow"],
+    [2, 0, "yellow"],
+    [2, 1, "lightgreen"],
+    [2, 2, "lightgreen"],
+    [3, 0, "yellow"],
+    [3, 1, "yellow"],
+    [4, 0, "yellow"],
+    [4, 1, "yellow"],
+    [4, 2, "lightgreen"],
+    [4, 3, "lightgreen"],
+    [4, 4, "lightgreen"],
+  ]
+)(
+  "tableColorTest: step=%i, node=%i, color=%s", (step, nodeId, color) => {
+    const table = tables[step]
+    const tableRow = table.find(row => row.id === nodeId)
+    expect(tableRow.color).toBe(color)
   }
 )
 
