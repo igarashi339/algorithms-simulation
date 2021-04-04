@@ -26,36 +26,9 @@ export const categories = [
             component: <InProgress />
           }
         ]
-      },
-      {
-        name: 'ダミーアルゴリズム',
-        path: '/dummy-algorithm',
-        contents: [
-          {
-            name: '解説',
-            path: '/description',
-          }
-        ]
-
-      },
+      }
     ],
-  },
-  {
-    name: 'ダミーカテゴリ',
-    path: '/dummy-category',
-    algorithms: [
-      {
-        name: 'ダミーアルゴリズム2',
-        path: '/dummy-algorithm2',
-        contents: [
-          {
-            name: '解説',
-            path: '/description',
-          }
-        ]
-      },
-    ],
-  },
+  }
 ]
 
 export const routes = categories.reduce((categoryAcc, categoryCur) => {
