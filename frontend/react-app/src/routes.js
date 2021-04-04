@@ -2,10 +2,16 @@ import { assoc, pipe } from 'ramda'
 import { Dijkstra } from './dijkstra/Dijkstra';
 import { Home } from './Home';
 import { InProgress } from './InProgress';
+import { ContactUs } from './ContactUs';
 
 const home = {
   path: '/',
   component: <Home />
+}
+
+const contactUs = {
+  path: '/contact-us',
+  component: <ContactUs />
 }
 
 // todo: もっといけてる書き方にできる気がする
@@ -81,4 +87,4 @@ export const routes = categories.reduce((categoryAcc, categoryCur) => {
     return route
   }, categoryAcc)
   return route;
-}, [home])
+}, [contactUs, home])
