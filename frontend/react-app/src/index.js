@@ -27,7 +27,7 @@ const useStyles = makeStyles(() => ({
     width: 'calc(100% - 280px)',
     height: '100%',
     overflowY: 'scroll',
-    backgroundColor: grey[50]
+    backgroundColor: grey[100]
   },
   content: {
     margin: '40px auto',
