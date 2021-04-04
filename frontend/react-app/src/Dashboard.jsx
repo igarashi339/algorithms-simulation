@@ -1,5 +1,6 @@
 import { Box, Typography, makeStyles } from '@material-ui/core'
 import { amber, grey } from '@material-ui/core/colors';
+import { ClassRounded } from '@material-ui/icons';
 import { Link, useLocation } from 'react-router-dom';
 import { categories } from './routes'
 
@@ -27,6 +28,9 @@ const useStyles = makeStyles(() => ({
   },
   current: {
     color: amber[200]
+  },
+  contactUs: {
+    padding: '24px',
   }
 }));
 
@@ -57,6 +61,9 @@ export const Dashboard = () => {
           ))}
         </Box>
       ))}
+      <Box className={classes.contactUs}>
+        <Link to="/contact-us">ご意見・お問い合わせ</Link>
+      </Box>
     </Box>
   )
 }
