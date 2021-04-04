@@ -20,14 +20,18 @@ const useStyles = makeStyles(() => ({
   },
   content: {
     display: 'flex',
-    marginTop: '20px'
+    marginTop: '20px',
+    flexWrap: 'wrap'
+  },
+  description: {
+    flexBasis: '100%'
   },
   graph: {
-    flexBasis: '50%',
+    flexBasis: '48%',
     height: '400px'
   },
   table: {
-    flexBasis: '50%'
+    flexBasis: '48%'
   },
   stepper: {
     width: '100%'
@@ -86,6 +90,8 @@ export const Dijkstra = () => {
       {control === 1 && <CircularProgress className={classes.circular} />}
       {control === 2 && <>
         <Box className={classes.content}>
+          {/* アルゴリズム描写 */}
+          <Box className={classes.description}> {result.descriptions[result.currentStep]} </Box>
           {/* グラフ */}
           <Box id="dijkstra" className={classes.graph} />
           {/* 表 */}

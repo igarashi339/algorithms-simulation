@@ -14,10 +14,17 @@ export const dijkstraParser = (response, setControl, setResult) => {
     return;
   }
 
+  const descriptions = makeDescriptions(response)
   const graphs = makeGraphs(response)
   const tables = makeTables(response)
 
-  setResult({ graphs: graphs, tables, currentStep: 0 })
+  setResult(
+    { 
+      descriptions: descriptions, 
+      graphs: graphs, 
+      tables: tables, 
+      currentStep: 0 
+    })
   setControl(2)
 }
 
@@ -271,6 +278,28 @@ const paintTables = (response, tables) => {
 export const makeTables = (response) => {
   const initialTables = makeInitialTables(response)
   return paintTables(response, initialTables)
+}
+
+export const makeDescriptions = (response) => {
+  const steps = response.data.search_info.steps
+  let descriptions = [ "すべてのノードのラベルを無限大(∞)で初期化します。" ]
+  descriptions = steps.reduce((acc, cur) => {
+    // ラベル最小ノードを追加
+    const minCostNodeStr = "ラベル未確定ノードのうち, 最もラベルが最も小さいノード" + cur.min_cost_node + "のラベルを確定します。"
+    acc.push(minCostNodeStr)
+
+    // ラベル更新対象ノードを追加
+    const labelUpdateNodeStr = "ノード" + cur.min_cost_node + "に隣接するノード" +  cur.adjacent_nodes.join(",") + "のラベルを更新します。"
+    acc.push(labelUpdateNodeStr)
+
+    return acc
+  }, descriptions)
+
+  descriptions = descriptions.slice(0, -1)
+  const shortestPath = response.data.search_info.shortest_path
+  const shortestPathCost = response.data.search_info.shortest_path_cost
+  descriptions.push("ゴールノードのラベルが確定したのでアルゴリズム終了です。最短経路は" + shortestPath.join("→") + ", 最短経路のコストは" + shortestPathCost + "です。")
+  return descriptions
 }
 
 export const drawDijkstraGraph = (id, graphs, currentStep) => {
