@@ -37,24 +37,28 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-export const Dashboard = () => {
+export const Dashboard = ({ toggleDrawer }) => {
   const classes = useStyles();
   const location = useLocation();
   const path = location.pathname;
 
+  const onClick = () => {
+    return toggleDrawer ? toggleDrawer(false) : () => { }
+  }
+
   return (
     <Box>
       <Box className={classes.title}>
-        <Link to="/"><Typography color="textSecondary">Algorithms Simulation</Typography></Link>
+        <Link to="/" onClick={onClick()}><Typography color="textSecondary">Algorithms Simulation</Typography></Link>
       </Box>
       {categories.map((category, index) => (
         <Box key={index}>
-          <Link to={category.path}>
+          <Link to={category.path} onClick={onClick()}>
             <Typography className={classes.category + ' ' + classes.link} color={path === category.path ? 'secondary' : 'textSecondary'}>{category.name}</Typography>
           </Link>
           {category.algorithms.map((algorithm, index) => (
             <Box key={index}>
-              <Link to={category.path + algorithm.path}>
+              <Link to={category.path + algorithm.path} onClick={onClick()}>
                 <Typography className={classes.algorithm + ' ' + classes.link} color={path === category.path + algorithm.path ? 'secondary' : 'textSecondary'}>{algorithm.name}</Typography>
               </Link>
             </Box>

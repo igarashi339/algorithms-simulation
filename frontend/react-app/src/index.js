@@ -1,4 +1,4 @@
-import { Box, Card, createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core';
+import { Box, Card, createMuiTheme, Divider, makeStyles, ThemeProvider } from '@material-ui/core';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -7,6 +7,8 @@ import { NotFound } from './NotFound'
 import { routes } from './routes'
 import { Header } from './Header'
 import { grey } from '@material-ui/core/colors';
+import { useGetLayout } from './hooks';
+import { SPBar } from './SPBar'
 
 const theme = createMuiTheme({
   typography: {
@@ -41,34 +43,70 @@ const useStyles = makeStyles(() => ({
     minHeight: 'calc(100% - 140px - 24px - 40px)',
     maxWidth: '1000px',
     padding: '40px',
-  }
+  },
+  wrapSP: {
+    position: 'relative',
+    top: '64px',
+  },
+  headerSP: {
+    padding: '8px 0',
+    width: '90%',
+    margin: 'auto'
+  },
+  contentSP: {
+    margin: 'auto',
+    padding: '32px 0',
+    width: '90%',
+  },
+
 }))
+
+const Routes = () => {
+  return (
+    <Switch>
+      {routes.map((route, index) => (
+        <Route exact key={index} path={route.path}>
+          {route.component}
+        </Route>
+      ))}
+      <Route>
+        <NotFound />
+      </Route>
+    </Switch>
+  )
+}
 
 const App = () => {
   const classes = useStyles();
+  const layout = useGetLayout();
 
   return (
     <Router>
-      <Box className={classes.dashboard}>
-        <Dashboard />
-      </Box>
-      <Box className={classes.wrap}>
-        <Box className={classes.header}>
-          <Header />
+      {layout === 'pc' && <>
+        <Box className={classes.dashboard}>
+          <Dashboard />
         </Box>
-        <Card className={classes.content}>
-          <Switch>
-            {routes.map((route, index) => (
-              <Route exact key={index} path={route.path}>
-                {route.component}
-              </Route>
-            ))}
-            <Route>
-              <NotFound />
-            </Route>
-          </Switch>
-        </Card>
-      </Box>
+        <Box className={classes.wrap}>
+          <Box className={classes.header}>
+            <Header />
+          </Box>
+          <Card className={classes.content}>
+            <Routes />
+          </Card>
+        </Box>
+      </>}
+      {layout === 'sp' && <>
+        <SPBar />
+        <Box className={classes.wrapSP}>
+          <Box className={classes.headerSP}>
+            <Header />
+          </Box>
+          <Divider />
+          <Box className={classes.contentSP}>
+            <Routes />
+          </Box>
+        </Box>
+      </>}
     </Router>
   )
 }

@@ -1,3 +1,4 @@
+import { useMediaQuery } from '@material-ui/core';
 import axios from 'axios'
 import { useState } from 'react';
 import { createRequestBody } from './util'
@@ -36,4 +37,8 @@ export const useGetResponse = (alg, parser) => {
     execute: execute,
     setResult: setResult
   }
+}
+
+export const useGetLayout = () => {
+  return useMediaQuery(theme => theme.breakpoints.up('md')) ? 'pc' : 'sp';
 }
