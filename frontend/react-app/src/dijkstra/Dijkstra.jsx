@@ -5,7 +5,7 @@ import { drawDijkstraGraph, dijkstraParser } from './dijkstra';
 import { DijkstraStepper } from './DijkstraStepper';
 import { DijkstraTable } from './DijkstraTable';
 import { dijkstraInputs } from './inputs';
-import { useGetResponse } from '../hooks'
+import { useGetLayout, useGetResponse } from '../hooks'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -23,15 +23,20 @@ const useStyles = makeStyles(() => ({
     marginTop: '20px',
     flexWrap: 'wrap'
   },
+  contentSP: {
+    flexDirection: 'column'
+  },
   description: {
     flexBasis: '100%'
   },
   graph: {
     flexBasis: '48%',
+    flexGrow: '1',
     height: '400px'
   },
   table: {
-    flexBasis: '48%'
+    flexBasis: '48%',
+    flexGrow: '1',
   },
   stepper: {
     width: '100%'
@@ -40,6 +45,7 @@ const useStyles = makeStyles(() => ({
 
 export const Dijkstra = () => {
   const classes = useStyles();
+  const layout = useGetLayout();
 
   // 入力
   const [inputs, setInputs] = useState(dijkstraInputs);
@@ -89,7 +95,7 @@ export const Dijkstra = () => {
       </Button>
       {control === 1 && <CircularProgress className={classes.circular} />}
       {control === 2 && <>
-        <Box className={classes.content}>
+        <Box className={layout === 'pc' ? classes.content : classes.contentSP}>
           {/* アルゴリズム描写 */}
           <Box className={classes.description}> {result.descriptions[result.currentStep]} </Box>
           {/* グラフ */}

@@ -2,7 +2,7 @@ import { Box, Typography, makeStyles } from '@material-ui/core'
 import { amber, grey } from '@material-ui/core/colors';
 import { Link, useLocation } from 'react-router-dom';
 import { categories } from './routes'
-import Logo from "./img/logo.png"
+import Logo2 from "./img/logo2.png"
 
 const useStyles = makeStyles(() => ({
   title: {
@@ -40,24 +40,28 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-export const Dashboard = () => {
+export const Dashboard = ({ toggleDrawer }) => {
   const classes = useStyles();
   const location = useLocation();
   const path = location.pathname;
 
+  const onClick = () => {
+    return toggleDrawer ? toggleDrawer(false) : () => { }
+  }
+
   return (
     <Box>
       <Box className={classes.title}>
-        <Link to="/"><img src={Logo} alt="algorithms simulation" className={classes.logo} /></Link>
+        <Link to="/" onClick={onClick()}><img src={Logo2} alt="algorithms simulation" className={classes.logo} /></Link>
       </Box>
       {categories.map((category, index) => (
         <Box key={index}>
-          <Link to={category.path}>
+          <Link to={category.path} onClick={onClick()}>
             <Typography className={classes.category + ' ' + classes.link} color={path === category.path ? 'secondary' : 'textSecondary'}>{category.name}</Typography>
           </Link>
           {category.algorithms.map((algorithm, index) => (
             <Box key={index}>
-              <Link to={category.path + algorithm.path}>
+              <Link to={category.path + algorithm.path} onClick={onClick()}>
                 <Typography className={classes.algorithm + ' ' + classes.link} color={path === category.path + algorithm.path ? 'secondary' : 'textSecondary'}>{algorithm.name}</Typography>
               </Link>
             </Box>
