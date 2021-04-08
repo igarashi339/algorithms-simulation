@@ -9,17 +9,24 @@ const useStyles = makeStyles(() => ({
     padding: '24px',
     backgroundColor: amber[200],
   },
+  link: {
+    transition: '0.5s',
+    '&:hover': {
+      backgroundColor: grey[200],
+      transition: '0.5s'
+    }
+  },
   categories: {
     margin: '24px 0 0'
   },
   category: {
-    padding: '8px 24px'
+    padding: '16px 24px'
   },
   algorithm: {
-    padding: '8px 24px 8px 48px',
+    padding: '16px 24px 16px 48px',
   },
   content: {
-    padding: '8px 24px 8px 72px',
+    padding: '16px 24px 16px 72px',
     transition: '0.5s',
     '&:hover': {
       backgroundColor: grey[200],
@@ -34,29 +41,30 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-export const Dashboard = () => {
+export const Dashboard = ({ toggleDrawer }) => {
   const classes = useStyles();
   const location = useLocation();
   const path = location.pathname;
 
+  const onClick = () => {
+    return toggleDrawer ? toggleDrawer(false) : () => { }
+  }
+
   return (
     <Box>
       <Box className={classes.title}>
-        <Link to="/"><Typography color="textSecondary">Algorithms Simulation</Typography></Link>
+        <Link to="/" onClick={onClick()}><Typography color="textSecondary">Algorithms Simulation</Typography></Link>
       </Box>
       {categories.map((category, index) => (
-        <Box key={index} className={classes.categories}>
-          <Typography className={classes.category} color="textSecondary">{category.name}</Typography>
+        <Box key={index}>
+          <Link to={category.path} onClick={onClick()}>
+            <Typography className={classes.category + ' ' + classes.link} color={path === category.path ? 'secondary' : 'textSecondary'}>{category.name}</Typography>
+          </Link>
           {category.algorithms.map((algorithm, index) => (
             <Box key={index}>
-              <Typography className={classes.algorithm} color="textSecondary">{algorithm.name}</Typography>
-              {algorithm.contents.map((content, index) => (
-                <Link key={index} to={category.path + algorithm.path + content.path}>
-                  <Box className={classes.content}>
-                    <Typography color={path === category.path + algorithm.path + content.path ? 'secondary' : 'textSecondary'}>{content.name}</Typography>
-                  </Box>
-                </Link>
-              ))}
+              <Link to={category.path + algorithm.path} onClick={onClick()}>
+                <Typography className={classes.algorithm + ' ' + classes.link} color={path === category.path + algorithm.path ? 'secondary' : 'textSecondary'}>{algorithm.name}</Typography>
+              </Link>
             </Box>
           ))}
         </Box>

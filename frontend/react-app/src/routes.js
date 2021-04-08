@@ -19,72 +19,47 @@ export const categories = [
   {
     name: '最短経路問題',
     path: '/shortest-path-problem',
+    component: <InProgress />,
     algorithms: [
       {
         name: 'ダイクストラ法',
         path: '/dijkstra',
+        component: <Dijkstra />,
         contents: [
-          {
-            name: 'シミュレーション',
-            path: '/simulation',
-            component: <Dijkstra />
-          },
           {
             name: '解説',
             path: '/description',
             component: <InProgress />
           }
         ]
-      },
-      {
-        name: 'ダミーアルゴリズム',
-        path: '/dummy-algorithm',
-        contents: [
-          {
-            name: 'シミュレーション',
-            path: '/simulation',
-          },
-          {
-            name: '解説',
-            path: '/description',
-          }
-        ]
-
-      },
+      }
     ],
-  },
-  {
-    name: 'ダミーカテゴリ',
-    path: '/dummy-category',
-    algorithms: [
-      {
-        name: 'ダミーアルゴリズム2',
-        path: '/dummy-algorithm2',
-        contents: [
-          {
-            name: 'シミュレーション',
-            path: '/simulation',
-          },
-          {
-            name: '解説',
-            path: '/description',
-          }
-        ]
-      },
-    ],
-  },
+  }
 ]
 
 export const routes = categories.reduce((categoryAcc, categoryCur) => {
   const route = categoryCur.algorithms.reduce((algorithmAcc, algorithmCur) => {
     const route = algorithmCur.contents.reduce((contentAcc, contentCur) => {
       if (contentCur.component) {
-        const route = assoc('path', categoryCur.path + algorithmCur.path + contentCur.path, contentCur)
-        contentAcc.push(route)
+        const content = pipe(
+          assoc('path', categoryCur.path + algorithmCur.path + contentCur.path),
+          assoc('name', categoryCur.name + algorithmCur.name + contentCur.name)
+        )(contentCur)
+        contentAcc.push(content)
       }
       return contentAcc
     }, algorithmAcc)
+    if (algorithmCur.component) {
+      const algorithm = pipe(
+        assoc('path', categoryCur.path + algorithmCur.path),
+        assoc('name', categoryCur.name + algorithmCur.name)
+      )(algorithmCur)
+      route.push(algorithm)
+    }
     return route
   }, categoryAcc)
+  if (categoryCur.component) {
+    route.push(categoryCur)
+  }
   return route;
 }, [contactUs, home])
