@@ -2,11 +2,14 @@ import { Box, Typography, makeStyles } from '@material-ui/core'
 import { amber, grey } from '@material-ui/core/colors';
 import { Link, useLocation } from 'react-router-dom';
 import { categories } from './routes'
+import Logo from "./img/logo.png"
 
 const useStyles = makeStyles(() => ({
   title: {
     padding: '24px',
-    backgroundColor: amber[200],
+  },
+  logo: {
+    width: '100%',
   },
   link: {
     transition: '0.5s',
@@ -49,7 +52,9 @@ export const Dashboard = ({ toggleDrawer }) => {
   return (
     <Box>
       <Box className={classes.title}>
-        <Link to="/" onClick={onClick()}><Typography color="textSecondary">Algorithms Simulation</Typography></Link>
+        <Link to="/" onClick={onClick()}>
+          <img src={Logo} alt="algorithms simulation" className={classes.logo} />
+        </Link>
       </Box>
       {categories.map((category, index) => (
         <Box key={index}>
