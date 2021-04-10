@@ -37,11 +37,6 @@ const useStyles = makeStyles(() => ({
   },
   current: {
     color: amber[200]
-  },
-  "@media (max-width: 960px)": {
-    logo: {
-      width: "150px"
-    }
   }
 }));
 
