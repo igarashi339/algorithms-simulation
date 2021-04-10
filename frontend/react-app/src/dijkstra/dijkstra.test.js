@@ -76,11 +76,11 @@ test.each(
     [2, 2, "lightgreen"],
     [2, 3, "white"],
     [2, 4, "white"],
-    [10, 0, "red"],
+    [10, 0, "salmon"],
     [10, 1, "salmon"],
     [10, 2, "salmon"],
     [10, 3, "salmon"],
-    [10, 4, "red"],
+    [10, 4, "salmon"],
   ]
 )(
   "nodeColorTest: step=%i, node=%i, color=%s", (step, nodeId, color) => {
