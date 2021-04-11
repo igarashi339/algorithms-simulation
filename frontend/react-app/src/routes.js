@@ -2,6 +2,7 @@ import { assoc, pipe } from 'ramda'
 import { Dijkstra } from './dijkstra/Dijkstra';
 import { Home } from './Home';
 import { InProgress } from './InProgress';
+import { ShortestPathProblem } from './ShortestPathProblem';
 
 const home = {
   path: '/',
@@ -13,7 +14,7 @@ export const categories = [
   {
     name: '最短経路問題',
     path: '/shortest-path-problem',
-    component: <InProgress />,
+    component: <ShortestPathProblem />,
     algorithms: [
       {
         name: 'ダイクストラ法',
