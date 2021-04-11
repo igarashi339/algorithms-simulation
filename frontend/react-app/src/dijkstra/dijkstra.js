@@ -282,14 +282,17 @@ export const makeTables = (response) => {
 
 export const makeDescriptions = (response) => {
   const steps = response.data.search_info.steps
-  let descriptions = [ "すべてのノードのラベルを無限大(∞)で初期化します。" ]
+  let descriptions = [ "Step1 すべてのノードのラベルを無限大(∞)で初期化します。" ]
+  let stepNum = 2
   descriptions = steps.reduce((acc, cur) => {
     // ラベル最小ノードを追加
-    const minCostNodeStr = "ラベル未確定ノードのうち, 最もラベルが最も小さいノード" + cur.min_cost_node + "のラベルを確定します。"
+    const minCostNodeStr = "Step" + String(stepNum) + " ラベル未確定ノードのうち, 最もラベルが最も小さいノード" + cur.min_cost_node + "のラベルを確定します。"
+    stepNum += 1
     acc.push(minCostNodeStr)
 
     // ラベル更新対象ノードを追加
-    const labelUpdateNodeStr = "ノード" + cur.min_cost_node + "に隣接するノード" +  cur.adjacent_nodes.join(",") + "のラベルを更新します。"
+    const labelUpdateNodeStr = "Step" + String(stepNum) + " ノード" + cur.min_cost_node + "に隣接するノード" +  cur.adjacent_nodes.join(",") + "のラベルを更新します。"
+    stepNum += 1
     acc.push(labelUpdateNodeStr)
 
     return acc
