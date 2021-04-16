@@ -5,6 +5,7 @@ import { InProgress } from './InProgress';
 import { ShortestPathProblem } from './ShortestPathProblem';
 
 const home = {
+  name: '',
   path: '/',
   component: <Home />
 }
@@ -38,7 +39,7 @@ export const routes = categories.reduce((categoryAcc, categoryCur) => {
       if (contentCur.component) {
         const content = pipe(
           assoc('path', categoryCur.path + algorithmCur.path + contentCur.path),
-          assoc('name', categoryCur.name + algorithmCur.name + contentCur.name)
+          assoc('name', categoryCur.name + ' | ' + algorithmCur.name + ' | ' + contentCur.name)
         )(contentCur)
         contentAcc.push(content)
       }
@@ -47,7 +48,7 @@ export const routes = categories.reduce((categoryAcc, categoryCur) => {
     if (algorithmCur.component) {
       const algorithm = pipe(
         assoc('path', categoryCur.path + algorithmCur.path),
-        assoc('name', categoryCur.name + algorithmCur.name)
+        assoc('name', categoryCur.name + ' | ' + algorithmCur.name)
       )(algorithmCur)
       route.push(algorithm)
     }
