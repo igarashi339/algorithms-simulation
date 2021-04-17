@@ -1,7 +1,7 @@
 import { Typography, Box, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
-function ListItemLink(props) {
+const ListItemLink = (props) => {
   return <ListItem button component="a" {...props} />;
 }
 
