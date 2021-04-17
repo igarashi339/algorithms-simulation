@@ -57,7 +57,7 @@ export const useHeader = (location) => {
       setPaths(path.split('/').filter(path => path))
       setNames(['ホーム'].concat(route.name.split(' | ').filter(name => name)))
       if (route.name) {
-        document.title = 'Algorithms Simulation | ' + route.name
+        document.title = route.name + ' | Algorithms Simulation'
       }
       else {
         document.title = 'Algorithms Simulation'
@@ -65,7 +65,7 @@ export const useHeader = (location) => {
     }
     else {
       setStatus(false)
-      document.title = 'Algorithms Simulation | 404 Page Not Found'
+      document.title = '404 Page Not Found | Algorithms Simulation'
     }
   }, [path, route])
 
