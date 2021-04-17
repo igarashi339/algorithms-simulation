@@ -67,7 +67,7 @@ export const useHeader = (location) => {
       setStatus(false)
       document.title = 'Algorithms Simulator | 404 Page Not Found'
     }
-  }, [route])
+  }, [path, route])
 
   return {
     names: names,
