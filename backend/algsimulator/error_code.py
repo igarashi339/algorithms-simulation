@@ -19,24 +19,24 @@ class ErrorCode(Enum):
     @staticmethod
     def get_message(e):
         if e == ErrorCode.SE1:
-            return "start_node is not in the POST body."
+            return "システムエラー：start_node属性がPOST bodyに存在しません。"
         if e == ErrorCode.SE2:
-            return "goal_node is not in the POST body."
+            return "システムエラー：goal_node属性がPOST bodyに存在しません。"
         if e == ErrorCode.SE3:
-            return "cost_matrix is not in the POST body."
+            return "システムエラー：cost_matrix属性がPOST bodyに存在しません。"
         if e == ErrorCode.SE4:
-            return "Given Json can't parse."
+            return "システムエラー：Jsonのパースに失敗しました。"
         if e == ErrorCode.UE1:
-            return "start_node is not a natural number"
+            return "エラー：スタートノードには自然数を指定してください。"
         if e == ErrorCode.UE2:
-            return "goal_node is not a natual number"
+            return "エラー：ゴールノードには自然数を指定してください。"
         if e == ErrorCode.UE3:
-            return "The graph generated from cost_matrix is invalid."
+            return "エラー：不正なグラフが入力されています。コスト行列の要素数が「ノード数」で指定した数の二乗個になっているか確認してください。また、コスト行列に-1以外の負の数値が入力されていないか確認してください。"
         if e == ErrorCode.UE4:
-            return "start_node is not exist in the graph."
+            return "エラー：スタートノード番号がグラフ中に存在しません。ノード番号は0から「ノード数 - 1」までの範囲で指定してください。"
         if e == ErrorCode.UE5:
-            return "goal_node is not exist in the graph."
+            return "エラー：ゴールノード番号がグラフ中に存在しません。ノード番号は0から「ノード数 - 1」までの範囲で指定してください。"
         if e == ErrorCode.UE6:
-            return "There is no path in the graph from start_node to goal_node."
+            return "エラー：スタートノードからゴールノードに到達するパスが存在しません。"
         if e == ErrorCode.UE7:
-            return "start_node and goal_node are the same."
+            return "エラー：スタートノードとゴールノードが一緒です。異なるノードを指定してください。"
