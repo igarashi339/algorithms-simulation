@@ -1,13 +1,6 @@
-import { Typography, Box } from '@material-ui/core';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import { Typography, Box, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-
-function ListItemLink(props) {
-  return <ListItem button component="a" {...props} />;
-}
+import { Link } from 'react-router-dom';
 
 export const Home = () => {
   return (
@@ -21,13 +14,13 @@ export const Home = () => {
       <Typography variant="body1" gutterBottom>
           アルゴリズムのイメージをつかむ練習や学校の課題の答え合わせに使ってみてください。
       </Typography>
-      <List component="nav" aria-label="secondary mailbox folders">
-        <ListItemLink href="/shortest-path-problem/dijkstra">
+      <List>
+        <ListItem button component={Link} to="/shortest-path-problem/dijkstra">
           <ListItemIcon>
             <ArrowRightIcon />
           </ListItemIcon>
           <ListItemText primary="ダイクストラ法" />
-        </ListItemLink>
+        </ListItem>
       </List>
     </Box>
   )
