@@ -70,6 +70,8 @@ export const Dijkstra = () => {
   useEffect(() => {
     if (control === 2) {
       drawDijkstraGraph('dijkstra', result.graphs, result.currentStep)
+      const canvas = document.querySelector('canvas');
+      canvas.style.touchAction = ''
     }
   }, [control, result])
 
