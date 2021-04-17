@@ -80,8 +80,8 @@ const makeNodeColoredGraphs = (response, graph)  => {
   const minCostNodeColor = 'yellow'
   const labelUpdateNodeColor = 'lightgreen'
   const shortestPathColor = 'salmon'
-  const startNodeColor = 'red'
-  const goalNodeColor = 'red'
+  const startNodeColor = 'salmon'
+  const goalNodeColor = 'salmon'
   const costFixedNodeColor = 'yellow'
 
   const updateGraph = (nodeId, color) => (graph) => {
