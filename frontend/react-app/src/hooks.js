@@ -1,7 +1,8 @@
 import { useMediaQuery } from '@material-ui/core';
 import axios from 'axios'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createRequestBody } from './util'
+import { routes } from './routes'
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -41,4 +42,36 @@ export const useGetResponse = (alg, parser) => {
 
 export const useGetLayout = () => {
   return useMediaQuery(theme => theme.breakpoints.up('md')) ? 'pc' : 'sp';
+}
+
+export const useHeader = (location) => {
+  const [names, setNames] = useState();
+  const [paths, setPaths] = useState();
+  const [status, setStatus] = useState(false);
+  const path = location.pathname;
+  const route = routes.find(route => route.path === path)
+
+  useEffect(() => {
+    if (route) {
+      setStatus(true)
+      setPaths(path.split('/').filter(path => path))
+      setNames(['ホーム'].concat(route.name.split(' | ').filter(name => name)))
+      if (route.name) {
+        document.title = 'Algorithms Simulator | ' + route.name
+      }
+      else {
+        document.title = 'Algorithms Simulator'
+      }
+    }
+    else {
+      setStatus(false)
+      document.title = 'Algorithms Simulator | 404 Page Not Found'
+    }
+  }, [route])
+
+  return {
+    names: names,
+    paths: paths,
+    status: status
+  }
 }
