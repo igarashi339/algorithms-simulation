@@ -19,6 +19,9 @@ const useStyles = makeStyles(() => ({
   },
   title: {
     color: 'white',
+  },
+  dashboard: {
+    width: '200px'
   }
 }))
 
@@ -38,7 +41,9 @@ export const SPBar = () => {
       </Toolbar>
     </AppBar>
     <Drawer open={open} onClose={toggleDrawer(false)}>
-      <Dashboard toggleDrawer={toggleDrawer} />
+      <Box className={classes.dashboard}>
+        <Dashboard toggleDrawer={toggleDrawer} />
+      </Box>
     </Drawer>
   </>)
 }
