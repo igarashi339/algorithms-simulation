@@ -19,8 +19,9 @@ export const dijkstraInputs = [
   },
   {
     key: 'costMatrix',
-    value: '-1 5 8 -1 -1 -1 -1 1 3 10 3 -1 -1 1 7 -1 4 -1 -1 5 -1 -1 -1 -1 -1',
+    value: `-1 5 8 -1 -1 \n-1 -1 1 3 10 \n3 -1 -1 1 7 \n-1 4 -1 -1 5 \n-1 -1 -1 -1 -1`,
     label: 'コスト行列',
-    type: 'string'
+    type: 'string',
+    multiline: true
   }
 ];

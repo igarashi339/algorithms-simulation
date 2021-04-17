@@ -86,6 +86,8 @@ export const Dijkstra = () => {
           label={row.label}
           value={row.value}
           onChange={onChange(index)}
+          multiline={row.multiline ? true: false}
+          rows={Math.min(Number(inputs[2].value) + 1, 11)}
         />
       )}
       <Button
