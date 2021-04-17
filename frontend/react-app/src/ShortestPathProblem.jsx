@@ -37,10 +37,10 @@ export const ShortestPathProblem = () => {
             <Typography variant="body1" gutterBottom>
                 グラフ、およびそのグラフ上の最短経路の例を図1に示します。最短経路は0 → 1 → 2 → 3 → 4, 最短経路のコストは12です。
             </Typography>
-            <Box className={classes.imageWrap}>
+            <figure className={classes.imageWrap}>
                 <img src={Graphs} alt="graph" className={classes.graphImage}/>
                 <figcaption>図1. グラフおよび最短経路の例</figcaption>
-            </Box>         
+            </figure>         
             <Typography variant="body1" gutterBottom>
                 グラフの表現としてはコスト行列を用いることが一般的です。図1のグラフのコスト行列を図2に示します。
             </Typography>
@@ -49,10 +49,10 @@ export const ShortestPathProblem = () => {
                 ノードiからノードjへのリンクが存在しない場合、コスト行列のi行j列には無効値(∞ や -1など)が格納されます。
                 このWebサイトではコスト行列の無効値として-1を用いています。
             </Typography>
-            <Box className={classes.imageWrap}>
+            <figure className={classes.imageWrap}>
                 <img src={CostMatrix} alt="graph" className={classes.costMatrixImage}/>
                 <figcaption>図2. コスト行列の例</figcaption>
-            </Box>    
+            </figure>    
             <Typography variant="body1" gutterBottom>
                 図1のグラフはノード番号が0から始まるので、図2のコスト行列も行番号・列番号が0から始まることに注意してください。
             </Typography>
