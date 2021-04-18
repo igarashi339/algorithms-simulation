@@ -35,7 +35,6 @@ export const ContactUs = () => {
   };
 
   const formSubmit = () => {
-
     let data = {
       name: name,
       email: email,
@@ -51,7 +50,8 @@ export const ContactUs = () => {
     // } catch (error) {
     //   console.log(error);
     // }
-    alert("送信しました。")
+    // require('dotenv').config()
+    console.log(process.env.REACT_APP_SLACK_USER_TOKEN)
   };
 
   const handleChangeEmail = (e) => {
@@ -80,6 +80,9 @@ export const ContactUs = () => {
       </Typography>
       <Typography variant="body1" gutterBottom>
         このwebサイトへのご意見・ご要望をお寄せください。
+      </Typography>
+      <Typography variant="body1" gutterBottom>
+      （例：〇〇というアルゴリズムのシミュレーションを実装してほしい、アルゴリズムの挙動が間違っている等）
       </Typography>
       <Typography variant="body1" gutterBottom>
         返信をご希望の方はメールアドレスを記載ください。
