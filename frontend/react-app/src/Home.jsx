@@ -5,6 +5,9 @@ import { Link } from 'react-router-dom';
 export const Home = () => {
   return (
     <Box>
+      <Typography variant="h5" gutterBottom>
+        Algorithms Simulation
+      </Typography>
       <Typography variant="body1" gutterBottom>
           いろいろなアルゴリズムをシミュレーションできるWebアプリです。
       </Typography>
