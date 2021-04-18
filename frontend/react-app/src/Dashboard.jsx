@@ -1,9 +1,9 @@
 import { Box, Typography, makeStyles } from '@material-ui/core'
 import { amber, grey } from '@material-ui/core/colors';
-import { ClassRounded } from '@material-ui/icons';
 import { Link, useLocation } from 'react-router-dom';
 import { categories } from './routes'
 import Logo from "./img/logo.png"
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 
 const useStyles = makeStyles(() => ({
   title: {
@@ -40,7 +40,10 @@ const useStyles = makeStyles(() => ({
     color: amber[200]
   },
   contactUs: {
-    padding: '24px',
+    padding: '16px 24px'
+  },
+  icon: {
+    display: 'flex'
   }
 }));
 
@@ -74,8 +77,12 @@ export const Dashboard = ({ toggleDrawer }) => {
           ))}
         </Box>
       ))}
-      <Box className={classes.contactUs}>
-        <Link to="/contact-us">ご意見・お問い合わせ</Link>
+      <Box className={classes.contactUs + ' ' + classes.link} >
+        <Link to="/contact-us">
+          <Typography color={path === '/contact-us' ? 'secondary' : 'textSecondary'} className={classes.icon}>
+            <InfoOutlinedIcon />ご意見・お問い合わせ
+          </Typography>
+        </Link>
       </Box>
     </Box>
   )

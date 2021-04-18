@@ -19,7 +19,7 @@ const useStyles = makeStyles(() => ({
 
 export const ContactUs = () => {
   const [name, setName] = useState("")
-  const [message, setMessage]  = useState("")
+  const [message, setMessage] = useState("")
   const [email, setEmail] = useState("")
   const [sent, setSent] = useState(false)
   const [emailError, setEmailError] = useState(false)
@@ -29,14 +29,14 @@ export const ContactUs = () => {
     setName("")
     setMessage("")
     setEmail("")
-  
+
     setTimeout(() => {
       setSent(false);
     }, 3000);
   };
 
   const formSubmit = () => {
-    if (message === "") {
+    if (message.trim() === "") {
       alert("メッセージが入力されていません。")
       return
     }
@@ -62,17 +62,17 @@ export const ContactUs = () => {
     ) {
       setEmail(e.target.value)
       setEmailError(true)
-  
+
       if (email === "") {
         // check if the input is empty
-        setEmailError( false );
+        setEmailError(false);
       }
     } else {
       setEmail(e.target.value)
       setEmailError(false)
     }
   };
-  
+
   return (
     <Box>
       <Typography variant="h5" gutterBottom>
@@ -82,7 +82,7 @@ export const ContactUs = () => {
         このwebサイトへのご意見・ご要望をお寄せください。
       </Typography>
       <Typography variant="body1" gutterBottom>
-      （例：〇〇というアルゴリズムのシミュレーションを実装してほしい、アルゴリズムの挙動が間違っている等）
+        （例：〇〇というアルゴリズムのシミュレーションを実装してほしい、アルゴリズムの挙動が間違っている等）
       </Typography>
       <Typography variant="body1" gutterBottom>
         返信をご希望の方はメールアドレスを記載ください。
@@ -120,10 +120,10 @@ export const ContactUs = () => {
           required
           type="text"
           fullWidth
-        /> 
-        <Button 
-          variant="contained" 
-          color="primary" 
+        />
+        <Button
+          variant="contained"
+          color="primary"
           className={classes.button}
           onClick={formSubmit}
         >
