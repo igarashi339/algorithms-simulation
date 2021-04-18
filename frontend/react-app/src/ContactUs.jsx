@@ -36,6 +36,10 @@ export const ContactUs = () => {
   };
 
   const formSubmit = () => {
+    if (message === "") {
+      alert("メッセージが入力されていません。")
+      return
+    }
     const data = new FormData();
     data.append("token", process.env.REACT_APP_SLACK_USER_TOKEN)
     data.append("channel", process.env.REACT_APP_SLACK_CHANNEL)
