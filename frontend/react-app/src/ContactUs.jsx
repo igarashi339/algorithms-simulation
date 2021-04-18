@@ -1,7 +1,6 @@
 
 import React, { useState } from "react";
-import { Typography, Box, makeStyles, Button } from '@material-ui/core';
-import TextField from "@material-ui/core/TextField";
+import { Typography, Box, makeStyles, Button, TextField } from '@material-ui/core';
 import axios from "axios";
 
 const useStyles = makeStyles(() => ({
@@ -21,7 +20,6 @@ export const ContactUs = () => {
   const [name, setName] = useState("")
   const [message, setMessage] = useState("")
   const [email, setEmail] = useState("")
-  const [sent, setSent] = useState(false)
   const [emailError, setEmailError] = useState(false)
   const classes = useStyles();
 
@@ -29,10 +27,6 @@ export const ContactUs = () => {
     setName("")
     setMessage("")
     setEmail("")
-
-    setTimeout(() => {
-      setSent(false);
-    }, 3000);
   };
 
   const formSubmit = () => {
