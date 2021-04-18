@@ -1,7 +1,6 @@
 
 import React, { useState } from "react";
 import { Typography, Box, makeStyles, Button } from '@material-ui/core';
-import axios from "axios";
 import TextField from "@material-ui/core/TextField";
 
 const useStyles = makeStyles(() => ({
@@ -21,7 +20,6 @@ export const ContactUs = () => {
   const [name, setName] = useState("")
   const [message, setMessage]  = useState("")
   const [email, setEmail] = useState("")
-  const [subject, setSubject] = useState("")
   const [sent, setSent] = useState(false)
   const [emailError, setEmailError] = useState(false)
   const classes = useStyles();
@@ -30,21 +28,18 @@ export const ContactUs = () => {
     setName("")
     setMessage("")
     setEmail("")
-    setSubject("")
   
     setTimeout(() => {
       setSent(false);
     }, 3000);
   };
 
-  const formSubmit = (e) => {
-    e.preventDefault();
-  
+  const formSubmit = () => {
+
     let data = {
       name: name,
       email: email,
       message: message,
-      subject: subject,
     };
 
     resetForm()
@@ -56,6 +51,7 @@ export const ContactUs = () => {
     // } catch (error) {
     //   console.log(error);
     // }
+    alert("送信しました。")
   };
 
   const handleChangeEmail = (e) => {
@@ -88,14 +84,13 @@ export const ContactUs = () => {
       <Typography variant="body1" gutterBottom>
         返信をご希望の方はメールアドレスを記載ください。
       </Typography>
-      <form onSubmit={(e) => formSubmit(e)} className={classes.root}>
+      <Box className={classes.root}>
         <TextField
           className={classes.textField}
           label="お名前"
           variant="outlined"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          required
           type="text"
           fullWidth
         />
@@ -123,14 +118,15 @@ export const ContactUs = () => {
           type="text"
           fullWidth
         /> 
-        <button 
+        <Button 
           variant="contained" 
           color="primary" 
           className={classes.button}
-          onClick>
+          onClick={formSubmit}
+        >
           送信する
-        </button>
-      </form>
+        </Button>
+      </Box>
     </Box>
   );
 }
