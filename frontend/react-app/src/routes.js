@@ -12,7 +12,7 @@ const home = {
 }
 
 const contactUs = {
-  name: 'ご意見・お問い合わせ',
+  name: 'お問い合わせ',
   path: '/contact-us',
   component: <ContactUs />
 }

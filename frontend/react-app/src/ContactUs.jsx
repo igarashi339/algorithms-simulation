@@ -70,7 +70,7 @@ export const ContactUs = () => {
   return (
     <Box>
       <Typography variant="h5" gutterBottom>
-        ご意見・お問い合わせ
+        お問い合わせ
       </Typography>
       <Typography variant="body1" gutterBottom>
         このwebサイトへのご意見・ご要望をお寄せください。

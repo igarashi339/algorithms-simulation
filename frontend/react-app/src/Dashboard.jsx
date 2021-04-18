@@ -77,10 +77,10 @@ export const Dashboard = ({ toggleDrawer }) => {
           ))}
         </Box>
       ))}
-      <Box className={classes.contactUs + ' ' + classes.link} >
-        <Link to="/contact-us">
-          <Typography color={path === '/contact-us' ? 'secondary' : 'textSecondary'} className={classes.icon}>
-            <InfoOutlinedIcon />ご意見・お問い合わせ
+      <Box >
+        <Link to="/contact-us" onClick={onClick()}>
+          <Typography color={path === '/contact-us' ? 'secondary' : 'textSecondary'} className={classes.icon + ' ' + classes.contactUs + ' ' + classes.link}>
+            <InfoOutlinedIcon />お問い合わせ
           </Typography>
         </Link>
       </Box>
