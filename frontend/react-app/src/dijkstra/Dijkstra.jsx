@@ -1,4 +1,4 @@
-import { TextField, makeStyles, Box, Button, CircularProgress } from '@material-ui/core';
+import { TextField, makeStyles, Box, Button, CircularProgress, Typography } from '@material-ui/core';
 import { assoc, update } from 'ramda';
 import { useEffect, useState } from 'react';
 import { drawDijkstraGraph, dijkstraParser } from './dijkstra';
@@ -40,6 +40,9 @@ const useStyles = makeStyles(() => ({
   },
   stepper: {
     width: '100%'
+  },
+  textWrap: {
+    paddingBottom: "20px"
   }
 }))
 
@@ -77,6 +80,20 @@ export const Dijkstra = () => {
 
   return (
     <Box className={classes.root}>
+      <Typography variant="h5" gutterBottom>
+        ダイクストラ法シミュレーション
+      </Typography>
+      <Box className={classes.textWrap}>
+        <Typography variant="body1" gutterBottom>
+          スタートノード、ゴールノード、ノード数、コスト行列を入力してください。
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          ※コスト行列のサイズは「ノード数×ノード数」である必要があります。
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          ※ノード番号は0から始まることに注意してください。
+        </Typography>
+      </Box>
       {inputs.map((row, index) =>
         <TextField
           key={index}
