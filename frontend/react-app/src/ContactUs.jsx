@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Typography, Box, makeStyles, Button } from '@material-ui/core';
 import TextField from "@material-ui/core/TextField";
+import axios from "axios";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -35,23 +36,18 @@ export const ContactUs = () => {
   };
 
   const formSubmit = () => {
-    let data = {
-      name: name,
-      email: email,
-      message: message,
-    };
+    const data = new FormData();
+    data.append("token", process.env.REACT_APP_SLACK_USER_TOKEN)
+    data.append("channel", process.env.REACT_APP_SLACK_CHANNEL)
+    data.append("text", "name: " + name + "\nemail: " + email + "\nmessage: " + message)
 
-    resetForm()
-  
-    // メール送信
-    // try {
-    //   await axios.post("http://localhost:8000", data);
-    //   this.setState({ sent: true }, this.resetForm());
-    // } catch (error) {
-    //   console.log(error);
-    // }
-    // require('dotenv').config()
-    console.log(process.env.REACT_APP_SLACK_USER_TOKEN)
+    try {
+      axios.post("https://slack.com/api/chat.postMessage", data);
+      resetForm()
+    } catch (error) {
+      console.log(error);
+    }
+    alert("メッセージを送信しました。")
   };
 
   const handleChangeEmail = (e) => {
