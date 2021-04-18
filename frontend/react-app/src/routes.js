@@ -3,11 +3,18 @@ import { Dijkstra } from './dijkstra/Dijkstra';
 import { Home } from './Home';
 import { InProgress } from './InProgress';
 import { ShortestPathProblem } from './ShortestPathProblem';
+import { ContactUs } from './ContactUs';
 
 const home = {
   name: '',
   path: '/',
   component: <Home />
+}
+
+const contactUs = {
+  name: 'ご意見・お問い合わせ',
+  path: '/contact-us',
+  component: <ContactUs />
 }
 
 // todo: もっといけてる書き方にできる気がする
@@ -58,4 +65,4 @@ export const routes = categories.reduce((categoryAcc, categoryCur) => {
     route.push(categoryCur)
   }
   return route;
-}, [home])
+}, [contactUs, home])
