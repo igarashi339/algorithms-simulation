@@ -118,7 +118,11 @@ export const Dijkstra = () => {
       {control === 2 && <>
         <Box className={layout === 'pc' ? classes.content : classes.contentSP}>
           {/* アルゴリズム描写 */}
-          <Box className={classes.description}> {result.descriptions[result.currentStep]} </Box>
+          <Box className={classes.description}> 
+          <Typography>
+            {result.descriptions[result.currentStep]} 
+          </Typography>
+          </Box>
           {/* グラフ */}
           <Box id="dijkstra" className={classes.graph} />
           {/* 表 */}
