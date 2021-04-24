@@ -286,7 +286,7 @@ export const makeDescriptions = (response) => {
   let stepNum = 2
   descriptions = steps.reduce((acc, cur) => {
     // ラベル最小ノードを追加
-    const minCostNodeStr = "Step" + String(stepNum) + " ラベル未確定ノードのうち, 最もラベルが最も小さいノード" + cur.min_cost_node + "のラベルを確定します。"
+    const minCostNodeStr = "Step" + String(stepNum) + " ラベル未確定ノードのうち, ラベルが最も小さいノード" + cur.min_cost_node + "のラベルを確定します。"
     stepNum += 1
     acc.push(minCostNodeStr)
 
