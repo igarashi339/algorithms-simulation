@@ -12,6 +12,9 @@ export const Home = () => {
           いろいろなアルゴリズムをシミュレーションできるWebアプリです。
       </Typography>
       <Typography variant="body1" gutterBottom>
+          東京のITエンジニアの <a href="https://twitter.com/igarashi20608">@igarashi20608</a>と<a href="https://twitter.com/hiko_74">@hiko_74</a>が開発しています。
+      </Typography>
+      <Typography variant="body1" gutterBottom>
           大学や専門学校の情報科で扱うアルゴリズムのうち、特につまずきがちなものを扱っています。
       </Typography>
       <Typography variant="body1" gutterBottom>
