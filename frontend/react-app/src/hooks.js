@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react';
 import { createRequestBody } from './util'
 import { routes } from './routes'
+import { endsWith } from 'ramda';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -48,7 +49,7 @@ export const useHeader = (location) => {
   const [names, setNames] = useState();
   const [paths, setPaths] = useState();
   const [status, setStatus] = useState(false);
-  const path = location.pathname;
+  const path = location.pathname === '/' ? location.pathname : location.pathname.endsWith('/') ? location.pathname.substr(0, location.pathname.length - 1) : location.pathname;
   const route = routes.find(route => route.path === path)
 
   useEffect(() => {
