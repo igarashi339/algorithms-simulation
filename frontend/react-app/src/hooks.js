@@ -3,7 +3,6 @@ import axios from 'axios'
 import { useEffect, useState } from 'react';
 import { createRequestBody } from './util'
 import { routes } from './routes'
-import { endsWith } from 'ramda';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
